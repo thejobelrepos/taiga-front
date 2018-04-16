@@ -152,6 +152,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
                 @kanbanUserstoriesService.replaceModel(us)
 
         @scope.$on("assigned-to:added", @.onAssignedToChanged)
+        @scope.$on("assigned-user:added", @.onAssignedUsersChanged)
+        @scope.$on("assigned-user:deleted", @.onAssignedUsersDeleted)
         @scope.$on("kanban:us:move", @.moveUs)
         @scope.$on("kanban:show-userstories-for-status", @.loadUserStoriesForStatus)
         @scope.$on("kanban:hide-userstories-for-status", @.hideUserStoriesForStatus)
@@ -194,6 +196,10 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
 
         @rootscope.$broadcast("assigned-to:add", us)
 
+    changeUsAssignedUsers: (id) ->
+        us = @kanbanUserstoriesService.getUsModel(id)
+        @rootscope.$broadcast("assigned-user:add", us)
+
     onAssignedToChanged: (ctx, userid, usModel) ->
         usModel.assigned_to = userid
 
@@ -203,6 +209,37 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             @.generateFilters()
             if @.isFilterDataTypeSelected('assigned_to') || @.isFilterDataTypeSelected('role')
                 @.filtersReloadContent()
+
+    onAssignedUsersChanged: (ctx, userid, usModel) ->
+        assignedUsers = _.clone(usModel.assigned_users, false)
+        assignedUsers.push(userid)
+        assignedUsers = _.uniq(assignedUsers)
+        usModel.assigned_users = assignedUsers
+        if not usModel.assigned_to
+            usModel.assigned_to = userid
+        @kanbanUserstoriesService.replaceModel(usModel)
+
+        promise = @repo.save(usModel)
+        promise.then null, ->
+            console.log "FAIL" # TODO
+
+    onAssignedUsersDeleted: (ctx, userid, usModel) ->
+        assignedUsersIds = _.clone(usModel.assigned_users, false)
+        assignedUsersIds = _.pull(assignedUsersIds, userid)
+        assignedUsersIds = _.uniq(assignedUsersIds)
+        usModel.assigned_users = assignedUsersIds
+
+        # Update as
+        if usModel.assigned_to not in assignedUsersIds and assignedUsersIds.length > 0
+            usModel.assigned_to = assignedUsersIds[0]
+        if assignedUsersIds.length == 0
+            usModel.assigned_to = null
+
+        @kanbanUserstoriesService.replaceModel(usModel)
+
+        promise = @repo.save(usModel)
+        promise.then null, ->
+            console.log "FAIL" # TODO
 
     refreshTagsColors: ->
         return @rs.projects.tagsColors(@scope.projectId).then (tags_colors) =>

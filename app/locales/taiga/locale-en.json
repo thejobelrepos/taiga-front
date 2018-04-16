@@ -143,6 +143,7 @@
             "SEVERITY": "Severity",
             "PRIORITY": "Priority",
             "ASSIGNED_TO": "Assigned to",
+            "ASSIGNED_USERS": "Assigned users",
             "POINTS": "Points",
             "IS_BLOCKED": "is blocked",
             "REF": "Ref",
@@ -169,6 +170,11 @@
             "DUE_SOON": "due soon",
             "PAST_DUE": "past due",
             "NO_LONGER_APPLICABLE": "no longer applicable"
+        },
+        "ASSIGNED_USERS": {
+            "ADD": "Select assigned user",
+            "ADD_ASSIGNED": "Add assigned",
+            "TITLE_LIGHTBOX_DELETE_ASSIGNED": "Delete assigned..."
         },
         "STATUS": {
             "CLOSED": "Closed",
@@ -1227,6 +1233,7 @@
             "STATUS": "status",
             "TYPE": "type",
             "ASSIGNED_TO": "assigned to",
+            "ASSIGNED_USERS": "assigned users",
             "MILESTONE": "sprint",
             "COLOR": "color"
         }
