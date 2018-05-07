@@ -47,7 +47,8 @@
         "RELATED_USERSTORIES": "Historias de usuario relacionadas",
         "CARD": {
             "ASSIGN_TO": "Asignado a",
-            "EDIT": "Editar tarjeta"
+            "EDIT": "Editar tarjeta",
+            "DELETE": "Elimina tarjeta"
         },
         "FORM_ERRORS": {
             "DEFAULT_MESSAGE": "Este valor parece inválido.",
@@ -143,11 +144,14 @@
             "SEVERITY": "Gravedad",
             "PRIORITY": "Prioridad",
             "ASSIGNED_TO": "Asignado a",
+            "ASSIGNED_USERS": "Usuarios asignados",
             "POINTS": "Puntos",
             "IS_BLOCKED": "está bloqueada",
             "REF": "Ref",
             "VOTES": "Votos",
-            "SPRINT": "Sprint"
+            "SPRINT": "Sprint",
+            "DUE_DATE": "Fecha de vencimiento",
+            "DUE_DATE_REASON": "Motivo  fecha de vencimiento"
         },
         "ROLES": {
             "ALL": "Todos"
@@ -161,6 +165,17 @@
             "CONFIRM_UNASSIGNED": "¿Está seguro de que desea dejarla sin asignar?",
             "TITLE_ACTION_EDIT_ASSIGNMENT": "Editar asignación",
             "SELF": "Asignármela"
+        },
+        "DUE_DATE": {
+            "TITLE_ACTION_SET_DUE_DATE": "Fijar fecha de vencimiento",
+            "DUE_SOON": "próximo vencimiento",
+            "PAST_DUE": "vencida",
+            "NO_LONGER_APPLICABLE": "ya no aplica"
+        },
+        "ASSIGNED_USERS": {
+            "ADD": "Selecciona usuario asignado",
+            "ADD_ASSIGNED": "Añadir asignación",
+            "TITLE_LIGHTBOX_DELETE_ASSIGNED": "Borra asignación..."
         },
         "STATUS": {
             "CLOSED": "Cerrada",
@@ -1067,14 +1082,18 @@
             "OPTION_UNASSIGNED": "No asignada",
             "PLACEHOLDER_SHORT_DESCRIPTION": "Escribe una breve descripción",
             "ACTION_EDIT": "Editar tarea",
-            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?"
+            "CONFIRM_CLOSE": "Los cambios no están gurdados. ¿Seguro que quieres cerrar el formulario?"
         },
         "CREATE_EDIT_US": {
             "TITLE": "Nueva Historia de Usuario",
             "PLACEHOLDER_DESCRIPTION": "Por favor añade un texto descriptivo que pueda ayudar a otros a entender mejor esta historia.",
             "NEW_US": "Nueva historia de usuario",
             "EDIT_US": "Editar historia de usuario",
-            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?"
+            "CONFIRM_CLOSE": "Los cambios no están gurdados. ¿Seguro que quieres cerrar el formulario?"
+        },
+        "DELETE_DUE_DATE": {
+            "TITLE": "Borrar fecha de vencimiento",
+            "SUBTITLE": "¿Seguro que quieres borrar la fecha de vencimiento?"
         },
         "DELETE_SPRINT": {
             "TITLE": "Borrar sprint"
@@ -1106,6 +1125,19 @@
             "WARNING": "Los administradores del proyecto recibirán el email",
             "PLACEHOLDER": "Escribe tu mensaje",
             "SEND": "Enviar"
+        },
+        "SET_DUE_DATE": {
+            "TITLE": "Fijar fecha de vencimiento",
+            "PLACEHOLDER_DUE_DATE": "Seleccionar fecha de vencimiento",
+            "REASON_FOR_DUE_DATE": "Motivo para fijar fecha de vencimiento",
+            "PLACEHOLDER_REASON_FOR_DUE_DATE": "¿Por qué esta historia de usuario necesita una fecha de vencimiento?",
+            "SUGGESTIONS": {
+                "IN_ONE_WEEK": "En una semana",
+                "IN_TWO_WEEKS": "En dos semanas",
+                "IN_ONE_MONTH": "En un mes",
+                "IN_THREE_MONTHS": "En tres meses"
+            },
+            "TITLE_ACTION_DELETE_DUE_DATE": "Borrar fecha de vencimiento"
         }
     },
     "EPIC": {
@@ -1194,14 +1226,19 @@
         "CLIENT_REQUIREMENT": "Requerido por el Cliente",
         "BLOCKED": "Bloqueada",
         "VALUES": {
+            "NOT_SET": "Sin fijar",
             "UNASSIGNED": "sin asignar"
         },
         "FIELDS": {
             "SUBJECT": "asunto",
             "DESCRIPTION": "descripción",
+            "PRIORITY": "prioridad",
+            "SEVERITY": "gravedad",
             "STATUS": "estado",
             "TYPE": "tipo",
             "ASSIGNED_TO": "asignado a",
+            "ASSIGNED_USERS": "usuarios asignados",
+            "DUE_DATE": "fecha de vencimiento",
             "MILESTONE": "sprint",
             "COLOR": "color"
         }
@@ -1345,6 +1382,7 @@
         "SAVED": "¡Nuestros Oompa Loompas guardaron todos tus cambios!",
         "CLOSE": "Cerrar notificación",
         "MAIL": "Notificaciones Por Mail",
+        "DESKTOP": "Notificaciones de escritorio usando alertas de navegador",
         "ASK_DELETE": "¿Esta seguro que desea eliminar?"
     },
     "CANCEL_ACCOUNT": {
@@ -1460,9 +1498,11 @@
             "SECTION_TITLE": "Configuración de Usuario",
             "USER_PROFILE": "Perfil de usuario",
             "CHANGE_PASSWORD": "Cambiar contraseña",
-            "EMAIL_NOTIFICATIONS": "Notificaciones por email"
+            "EMAIL_NOTIFICATIONS": "Notificaciones por email",
+            "DESKTOP_NOTIFICATIONS": "Notificaciones de escritorio"
         },
         "NOTIFICATIONS": {
+            "LIVE_SECTION_NAME": "Notificaciones de escritorio",
             "SECTION_NAME": "Notificaciones por Email",
             "COLUMN_PROJECT": "Proyecto",
             "COLUMN_RECEIVE_ALL": "Recibir Todo",
