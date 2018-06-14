@@ -295,6 +295,36 @@ module.directive("tgBlockingMessageInput", ["$log", "$tgTemplate", "$compile", B
 
 
 #############################################################################
+## Generic Lightbox Time-Spent Input Directive
+#############################################################################
+
+TimeSpentInputDirective = ($log, $template, $compile) ->
+    template = $template.get("common/lightbox/lightbox-time-spent-input.html", true)
+
+    link = ($scope, $el, $attrs, $model) ->
+        if not $attrs.watch
+            return $log.error "No watch attribute on tg-time-spent-input directive"
+
+        $scope.$watch $attrs.watch, (value) ->
+            if value is not undefined and value == true
+                $el.find(".time-spent-note").removeClass("hidden")
+            else
+                $el.find(".time-spent-note").addClass("hidden")
+
+    templateFn = ($el, $attrs) ->
+        return template({ngmodel: $attrs.ngModel})
+
+    return {
+        template: templateFn
+        link: link
+        require: "ngModel"
+        restrict: "EA"
+    }
+
+module.directive("tgTimeSpentInput", ["$log", "$tgTemplate", "$compile", TimeSpentInputDirective])
+
+
+#############################################################################
 ## Creare Bulk Userstories Lightbox Directive
 #############################################################################
 
