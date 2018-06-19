@@ -24,6 +24,7 @@
         "UNBLOCK": "Unblock",
         "UNBLOCK_TITLE": "Unblock this item",
         "BLOCKED_NOTE": "Why is this blocked?",
+        "TIME_SPENT_NOTE": "Please enter the estimated time spent, in minutes",
         "BLOCKED_REASON": "Please explain the reason",
         "CREATED_BY": "Created by {{fullDisplayName}}",
         "CLOSE": "close",
