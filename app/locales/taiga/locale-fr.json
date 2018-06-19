@@ -24,7 +24,7 @@
         "UNBLOCK": "Débloquer",
         "UNBLOCK_TITLE": "Débloquer cet élément",
         "BLOCKED_NOTE": "Pourquoi est-ce bloqué ?",
-        "TIME_SPENT_NOTE": "Veuillez entrer le temps éstimé, en minutes",
+        "TIME_SPENT_NOTE": "Temps éstimé (minutes)",
         "BLOCKED_REASON": "Veuillez s'il vous plait indiquer la raison",
         "CREATED_BY": "Créé par {{fullDisplayName}}",
         "CLOSE": "clos",
