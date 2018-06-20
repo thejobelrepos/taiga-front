@@ -1089,6 +1089,10 @@ $confirm, $q, attachmentsService) ->
             $scope.obj.is_blocked = not $scope.obj.is_blocked
             $scope.$apply()
 
+        $el.on "click", ".display-time-spent-input", (event) ->
+            $scope.obj.display-time-spent-input = not $scope.obj.display-time-spent-input
+            $scope.$apply()
+
         $el.on "click", ".iocaine", (event) ->
             $scope.obj.is_iocaine = not $scope.obj.is_iocaine
             $scope.$broadcast("isiocaine:changed", $scope.obj)
