@@ -619,7 +619,7 @@
         flex-basis: $width;
         flex-direction: row;
         flex-grow: 0;
-        margin-bottom: $spacing*2;
+        margin-bottom: $spacing * 2;
         main {
             flex-grow: 1;
             margin-right: $spacing;
@@ -822,11 +822,11 @@
         }
         .time-spent {
             background: $red;
+            border-radius: 4px 4px 0 0;
             display: block;
             margin-left: 8px;
-            border-radius: 4px 4px 0 0;
             &:hover {
-                background: green;
+                background: #008000;
             }
         }
     }
