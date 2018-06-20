@@ -34,9 +34,9 @@ block options
             )
                 tg-svg(svg-icon="icon-lock")
         div.time-spent
-            label.button(
+            label.button.display-time-spent-input(
                 title="Time spent"
-                ng-class="{ 'button-red item-unblock': obj.is_blocked, 'item-block': !obj.is_blocked }"
+                ng-class="{ 'button-red item-unblock': obj.display_time_spent_input, 'item-block': !obj.display_time_spent_input }"
             )
                 tg-svg(svg-icon="icon-clock")
 
@@ -46,6 +46,6 @@ block options
     )
 
     tg-time-spent-input(
-        watch="obj.display-time-spent-input"
+        watch="obj.display_time_spent_input"
         ng-model="obj.time_spent_note"
     )

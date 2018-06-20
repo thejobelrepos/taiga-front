@@ -1090,7 +1090,7 @@ $confirm, $q, attachmentsService) ->
             $scope.$apply()
 
         $el.on "click", ".display-time-spent-input", (event) ->
-            $scope.obj.display-time-spent-input = not $scope.obj.display-time-spent-input
+            $scope.obj.display_time_spent_input = not $scope.obj.display_time_spent_input
             $scope.$apply()
 
         $el.on "click", ".iocaine", (event) ->
