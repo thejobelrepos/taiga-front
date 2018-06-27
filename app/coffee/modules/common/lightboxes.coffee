@@ -293,6 +293,81 @@ BlockingMessageInputDirective = ($log, $template, $compile) ->
 
 module.directive("tgBlockingMessageInput", ["$log", "$tgTemplate", "$compile", BlockingMessageInputDirective])
 
+#############################################################################
+## Block Lightbox Directive
+#############################################################################
+
+# Issue/Userstory blocking message lightbox directive.
+
+TimeSpentLightboxDirective = ($rootscope, $tgrepo, $confirm, lightboxService, $loading, $modelTransform, $translate) ->
+    link = ($scope, $el, $attrs, $model) ->
+        title = $translate.instant($attrs.title)
+        $el.find("h2.title").text(title)
+
+        unblock = (finishCallback) =>
+            transform = $modelTransform.save (item) ->
+                item.time_spent_note = ""
+
+                return item
+
+            transform.then ->
+                $confirm.notify("success")
+                $rootscope.$broadcast("object:updated")
+                finishCallback()
+
+            transform.then null, ->
+                $confirm.notify("error")
+                item.revert()
+
+            transform.finally ->
+                finishCallback()
+
+            return transform
+
+        block = () ->
+            currentLoading = $loading()
+                .target($el.find(".button-green"))
+                .start()
+
+            transform = $modelTransform.save (item) ->
+                item.time_spent_note = $el.find(".reason").val()
+
+                return item
+
+            transform.then ->
+                $confirm.notify("success")
+                $rootscope.$broadcast("object:updated")
+
+            transform.then null, ->
+                $confirm.notify("error")
+
+            transform.finally ->
+                currentLoading.finish()
+                lightboxService.close($el)
+
+        $scope.$on "block", ->
+            $el.find(".reason").val($model.$modelValue.time_spent_note)
+            lightboxService.open($el)
+
+        $scope.$on "unblock", (event, model, finishCallback) =>
+            unblock(finishCallback)
+
+        $scope.$on "$destroy", ->
+            $el.off()
+
+        $el.on "click", ".button-green", (event) ->
+            event.preventDefault()
+
+            block()
+
+    return {
+        templateUrl: "common/lightbox/lightbox-time-spent.html"
+        link: link
+        require: "ngModel"
+    }
+
+module.directive("tgLbTimeSpent", ["$rootScope", "$tgRepo", "$tgConfirm", "lightboxService", "$tgLoading", "$tgQueueModelTransformation", "$translate", TimeSpentLightboxDirective])
+
 
 #############################################################################
 ## Generic Lightbox Time-Spent Input Directive
