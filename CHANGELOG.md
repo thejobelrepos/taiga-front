@@ -2,6 +2,39 @@
 
 ## Unreleased
 
+## 3.3.10 (2018-06-21)
+
+### Misc
+
+- Fix style bug.
+
+## 3.3.9 (2018-06-21)
+
+### Misc
+
+- Update locales.
+
+- Improve RTL styles.
+
+## 3.3.8 (2018-06-14)
+
+### Features
+
+- Add Right-To-Left (RTL) support.
+
+### Misc
+
+- Update locales.
+
+## 3.3.7 (2018-05-31)
+
+### Misc
+
+- Fix bug unable to sign up when no privacyPolicyUrl or termsOfServiceUrl
+  settings were defined.
+
+- Update locales.
+
 ## 3.3.6 (2018-05-24)
 
 ### Misc
