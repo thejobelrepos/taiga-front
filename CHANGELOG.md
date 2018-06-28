@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 3.3.12 (2018-06-27)
+
+### Misc
+
+- Temporary remove assigned users filters.
+
+## 3.3.11 (2018-06-27)
+
+### Misc
+
+- Fix debounce load US's
+- Fix RTL style bug
+
 ## 3.3.10 (2018-06-21)
 
 ### Misc
