@@ -1,6 +1,7 @@
 fieldset.time-spent-note.hidden
     input(
-        type="text"
+        type="number"
+        data-type="digits"
         name="time_spent_note"
         ng-attr-placeholder="{{'COMMON.TIME_SPENT_NOTE' | translate}}"
         ng-model!="<%- ngmodel %>"
