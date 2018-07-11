@@ -294,82 +294,6 @@ BlockingMessageInputDirective = ($log, $template, $compile) ->
 module.directive("tgBlockingMessageInput", ["$log", "$tgTemplate", "$compile", BlockingMessageInputDirective])
 
 #############################################################################
-## Block Lightbox Directive
-#############################################################################
-
-# Issue/Userstory blocking message lightbox directive.
-
-TimeSpentLightboxDirective = ($rootscope, $tgrepo, $confirm, lightboxService, $loading, $modelTransform, $translate) ->
-    link = ($scope, $el, $attrs, $model) ->
-        title = $translate.instant($attrs.title)
-        $el.find("h2.title").text(title)
-
-        unblock = (finishCallback) =>
-            transform = $modelTransform.save (item) ->
-                item.time_spent_note = ""
-
-                return item
-
-            transform.then ->
-                $confirm.notify("success")
-                $rootscope.$broadcast("object:updated")
-                finishCallback()
-
-            transform.then null, ->
-                $confirm.notify("error")
-                item.revert()
-
-            transform.finally ->
-                finishCallback()
-
-            return transform
-
-        block = () ->
-            currentLoading = $loading()
-                .target($el.find(".button-green"))
-                .start()
-
-            transform = $modelTransform.save (item) ->
-                item.time_spent_note = $el.find(".reason").val()
-
-                return item
-
-            transform.then ->
-                $confirm.notify("success")
-                $rootscope.$broadcast("object:updated")
-
-            transform.then null, ->
-                $confirm.notify("error")
-
-            transform.finally ->
-                currentLoading.finish()
-                lightboxService.close($el)
-
-        $scope.$on "block", ->
-            $el.find(".reason").val($model.$modelValue.time_spent_note)
-            lightboxService.open($el)
-
-        $scope.$on "unblock", (event, model, finishCallback) =>
-            unblock(finishCallback)
-
-        $scope.$on "$destroy", ->
-            $el.off()
-
-        $el.on "click", ".button-green", (event) ->
-            event.preventDefault()
-
-            block()
-
-    return {
-        templateUrl: "common/lightbox/lightbox-time-spent.html"
-        link: link
-        require: "ngModel"
-    }
-
-module.directive("tgLbTimeSpent", ["$rootScope", "$tgRepo", "$tgConfirm", "lightboxService", "$tgLoading", "$tgQueueModelTransformation", "$translate", TimeSpentLightboxDirective])
-
-
-#############################################################################
 ## Generic Lightbox Time-Spent Input Directive
 #############################################################################
 
@@ -878,9 +802,11 @@ module.directive("tgLbSetDueDate", ["lightboxService", "$tgLoading", "$translate
 ## Create/Edit Lightbox Directive
 #############################################################################
 
+groupBy = @.taiga.groupBy
+
 CreateEditDirective = (
 $log, $repo, $model, $rs, $rootScope, lightboxService, $loading, $translate,
-$confirm, $q, attachmentsService) ->
+$confirm, $q, attachmentsService, $template, $compile) ->
     link = ($scope, $el, attrs) ->
         form = null
         schemas = {
@@ -888,50 +814,68 @@ $confirm, $q, attachmentsService) ->
                 objName: 'User Story',
                 model: 'userstories',
                 params: { include_attachments: true, include_tasks: true },
-                requiredAttrs: ['project'],
+                data: (project) ->
+                    return {
+                        statusList: _.sortBy(project.us_statuses, "order")
+                    }
                 initialData: (data) ->
                     return {
                         project: data.project.id
+                        subject: ""
+                        description: ""
+                        tags: []
                         points : {}
                         status: data.project.default_us_status
                         is_archived: false
-                        tags: []
-                        subject: ""
-                        description: ""
                     }
             }
             task: {
                 objName: 'Task',
                 model: 'tasks',
                 params: { include_attachments: true },
-                requiredAttrs: ['project', 'sprintId', 'usId'],
+                data: (project) ->
+                    return {
+                        statusList: _.sortBy(project.task_statuses, "order")
+                    }
                 initialData: (data) ->
                     return {
                         project: data.project.id
-                        milestone: data.sprintId
-                        user_story: data.usId
-                        is_archived: false
-                        status: data.project.default_task_status
+                        subject: ""
+                        description: ""
                         assigned_to: null
-                        tags: [],
-                        subject: "",
-                        description: "",
+                        tags: []
+                        milestone: data.sprintId
+                        status: data.project.default_task_status
+                        user_story: data.us
+                        is_archived: false
                     }
             },
             issue: {
                 objName: 'Issue',
                 model: 'issues',
                 params: { include_attachments: true },
-                requiredAttrs: ['project', 'typeList', 'typeById', 'severityList', 'priorityList'],
+                data: (project) ->
+                    return {
+                        project: project
+                        statusList: _.sortBy(project.issue_statuses, "order")
+                        typeById: groupBy(project.issue_types, (x) -> x.id)
+                        typeList: _.sortBy(project.issue_types, "order")
+                        severityById: groupBy(project.severities, (x) -> x.id)
+                        severityList: _.sortBy(project.severities, "order")
+                        priorityById: groupBy(project.priorities, (x) -> x.id)
+                        priorityList: _.sortBy(project.priorities, "order")
+                    }
                 initialData: (data) ->
                     return {
-                        project: data.project.id
-                        subject: ""
-                        status: data.project.default_issue_status
-                        type: data.project.default_issue_type
+                        assigned_to: null
+                        milestone: data.sprintId
                         priority: data.project.default_priority
+                        project: data.project.id
                         severity: data.project.default_severity
+                        status: data.project.default_issue_status
+                        subject: ""
                         tags: []
+                        type: data.project.default_issue_type
                     }
             }
         }
@@ -940,30 +884,26 @@ $confirm, $q, attachmentsService) ->
         attachmentsToDelete = Immutable.List()
 
         $scope.$on "genericform:new", (ctx, data) ->
-            if beforeMount('new', data, ['objType', 'statusList', ])
+            if beforeMount('new', data, ['project'])
                 mountCreateForm(data)
                 afterMount()
 
         $scope.$on "genericform:edit", (ctx, data) ->
-            if beforeMount('edit', data, ['objType', 'statusList', 'obj', 'attachments'])
+            if beforeMount('edit', data, ['project', 'obj', 'attachments'])
                 mountUpdateForm(data)
                 afterMount()
 
         beforeMount = (mode, data, requiredAttrs) ->
             form.reset() if form
-            $el.find(".tag-input").val("")
 
             # Get form schema
             if !data.objType || !schemas[data.objType]
                 return $log.error(
                     "Invalid objType `#{data.objType}` for `genericform:#{mode}` event")
+            $scope.objType = data.objType
             $scope.schema = schemas[data.objType]
 
-            # Get required attrs for creation from objType schema
-            if mode == 'new'
-                requiredAttrs = $scope.schema.requiredAttrs.concat(requiredAttrs)
-
-            # Check if required attrs for creating are present
+            # Get required attrs of the directive
             getAttrs(mode, data, requiredAttrs)
 
             return true
@@ -972,25 +912,26 @@ $confirm, $q, attachmentsService) ->
             $scope.obj = $model.make_model($scope.schema.model, $scope.schema.initialData(data))
             $scope.isNew = true
             $scope.attachments = Immutable.List()
-
-            # Update texts for creation
-            $el.find(".button-green").html($translate.instant("COMMON.CREATE"))
-            $el.find(".title").html($translate.instant(
-                "LIGHTBOX.CREATE_EDIT.NEW", { objName: $scope.schema.objName }))
-            $el.find(".blocked-note").addClass("hidden")
+            $scope.text = {
+                title: $translate.instant("LIGHTBOX.CREATE_EDIT.NEW", { objName: $scope.schema.objName })
+                action: $translate.instant("COMMON.CREATE")
+            }
+            render()
 
         mountUpdateForm = (data) ->
             $scope.isNew = false
             $scope.attachments = Immutable.fromJS($scope.attachments)
-
-            # Update texts for edition
-            $el.find(".button-green").html($translate.instant("COMMON.SAVE"))
-            $el.find(".title").html($translate.instant(
-                "LIGHTBOX.CREATE_EDIT.EDIT", { objName: $scope.schema.objName }))
+            $scope.text = {
+                title: $translate.instant("LIGHTBOX.CREATE_EDIT.EDIT", { objName: $scope.schema.objName })
+                action: $translate.instant("COMMON.SAVE")
+            }
+            render()
 
         afterMount = () ->
             resetAttachments()
-            setStatus($scope.obj.status)
+            setStatus($scope.obj?.status)
+
+ 
             $scope.createEditOpen = true
             lightboxService.open $el, () ->
                 $scope.createEditOpen = false
@@ -1182,6 +1123,16 @@ $confirm, $q, attachmentsService) ->
         $scope.isClientRequirement = () ->
             return $scope.obj?.client_requirement
 
+        render = () ->
+            templatePath = "common/lightbox/lightbox-create-edit/lb-create-edit-#{$scope.objType}.html"
+            template = $template.get(templatePath, true)
+
+            _.map $scope.schema.data($scope.project), (value, key) ->
+                $scope[key] = value
+
+            html = $compile(template($scope))($scope)
+            $el.html(html)
+
     return {
         link: link
     }
@@ -1197,6 +1148,8 @@ module.directive("tgLbCreateEdit", [
     "$translate",
     "$tgConfirm",
     "$q",
-    "tgAttachmentsService"
+    "tgAttachmentsService",
+    "$tgTemplate",
+    "$compile",
     CreateEditDirective
 ])

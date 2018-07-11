@@ -167,8 +167,7 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             when "standard" then  @rootscope.$broadcast("genericform:new",
                 {
                     'objType': 'us',
-                    'project': @scope.project,
-                    'statusList': @scope.usStatusList
+                    'project': @scope.project
                 })
             when "bulk" then @rootscope.$broadcast("usform:bulk",
                                                    @scope.projectId, statusId)
@@ -355,7 +354,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
 
     initializeSubscription: ->
         routingKey1 = "changes.project.#{@scope.projectId}.userstories"
-        @events.subscribe @scope, routingKey1, debounceLeading(500, (message) =>
+        randomTimeout = taiga.randomInt(700, 1000)
+        @events.subscribe @scope, routingKey1, debounceLeading(randomTimeout, (message) =>
             @.loadUserstories())
 
     loadInitialData: ->
