@@ -44,6 +44,10 @@
         }
         .created-time-spent {
             color: $red;
+            text-align: right;
+            @include breakpoint(laptop) {
+                text-align: left;
+            }
         }
     }
 }
