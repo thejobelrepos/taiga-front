@@ -722,11 +722,11 @@ TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate, $loading, $
         $el.on "click", "a", (event) ->
             event.preventDefault()
 
-            if $el.find(".time-spent-input").is(":hidden")
-                $el.find(".time-spent-input").removeClass("hidden")
+            if $el.parent().find(".time-spent-input").is(":hidden")
+                $el.parent().find(".time-spent-input").removeClass("hidden")
             else
-                $el.find(".time-spent-input").addClass("hidden")
-                timeSpent = $el.find(".time-spent-input").val()
+                $el.parent().find(".time-spent-input").addClass("hidden")
+                timeSpent = $el.parent().find(".time-spent-input").val()
                 save(timeSpent)
 
         $scope.$on "$destroy", ->
