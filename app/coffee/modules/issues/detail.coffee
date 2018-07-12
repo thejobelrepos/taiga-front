@@ -691,7 +691,8 @@ module.directive("tgPromoteIssueToUsButton", ["$rootScope", "$tgRepo", "$tgConfi
 
 TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate) ->
     link = ($scope, $el, $attrs, $model) ->
-
+        notAutoSave = $scope.$eval($attrs.notAutoSave)
+        
         save = (timeSpent) ->
             $.fn.popover().closeAll()
 
