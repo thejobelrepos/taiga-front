@@ -692,37 +692,41 @@ module.directive("tgPromoteIssueToUsButton", ["$rootScope", "$tgRepo", "$tgConfi
 TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate) ->
     link = ($scope, $el, $attrs, $model) ->
 
-        save = (issue, askResponse) =>
-            data = {
-                generated_from_issue: issue.id
-                project: issue.project,
-                subject: issue.subject
-                description: issue.description
-                tags: issue.tags
-                is_blocked: issue.is_blocked
-                blocked_note: issue.blocked_note
-                due_date: issue.due_date
-            }
+        save = (timeSpent) ->
+            $.fn.popover().closeAll()
+
+            if notAutoSave
+                $model.$modelValue.time_spent_note = timeSpent
+                $scope.$apply()
+                return
+
+            currentLoading = $loading()
+                .target($el.find(".created-time-spent"))
+                .start()
+
+            transform = $modelTransform.save (issue) ->
+                issue.time_spent_note = timeSpent
+                return issue
 
             onSuccess = ->
-                askResponse.finish()
-                $confirm.notify("success")
-                $rootScope.$broadcast("promote-issue-to-us:success")
+                $rootScope.$broadcast("object:updated")
+                currentLoading.finish()
 
             onError = ->
-                askResponse.finish()
                 $confirm.notify("error")
+                currentLoading.finish()
 
-            $repo.create("userstories", data).then(onSuccess, onError)
+            transform.then(onSuccess, onError)
 
         $el.on "click", "a", (event) ->
             event.preventDefault()
-            issue = $model.$modelValue
 
             if $el.find(".time-spent-input").is(":hidden")
                 $el.find(".time-spent-input").removeClass("hidden")
             else
                 $el.find(".time-spent-input").addClass("hidden")
+                timeSpent = $el.find(".time-spent-input").val()
+                save(timeSpent)
 
         $scope.$on "$destroy", ->
             $el.off()
