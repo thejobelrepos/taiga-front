@@ -239,7 +239,7 @@
         transition: background .2s linear;
         transition-delay: .1s;
         &:hover {
-            background: $green;
+            background: #008000;
         }
         &.editable {
             cursor: pointer;
