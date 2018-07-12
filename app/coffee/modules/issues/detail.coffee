@@ -719,12 +719,10 @@ TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate) ->
             event.preventDefault()
             issue = $model.$modelValue
 
-            title = $translate.instant("ISSUES.CONFIRM_PROMOTE.TITLE")
-            message = $translate.instant("ISSUES.CONFIRM_PROMOTE.MESSAGE")
-            subtitle = issue.subject
-
-            $confirm.ask(title, subtitle, message).then (response) =>
-                save(issue, response)
+            if $el.find(".time-spent-input").is(":hidden")
+                $el.find(".time-spent-input").removeClass("hidden")
+            else
+                $el.find(".time-spent-input").addClass("hidden")
 
         $scope.$on "$destroy", ->
             $el.off()
