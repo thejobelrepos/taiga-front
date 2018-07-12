@@ -177,8 +177,7 @@
     .item-block,
     .item-unblock,
     .promote-button,
-    .button-delete,
-    .time-spent-button {
+    .button-delete {
         background: $gray-light;
         display: inline-block;
         margin-right: .5rem;
@@ -231,5 +230,22 @@
     }
     a {
         display: block;
+    }
+    .time-spent-button {
+        background: $red;
+        display: inline-block;
+        margin-right: .5rem;
+        padding: 1rem;
+        transition: background .2s linear;
+        transition-delay: .1s;
+        &:hover {
+            background: $green;
+        }
+        &.editable {
+            cursor: pointer;
+        }
+        +input {
+            display: none;
+        }
     }
 }
