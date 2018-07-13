@@ -513,7 +513,7 @@
             "RECRUITING_MESSAGE": "Qui cherchez-vous ?",
             "RECRUITING_PLACEHOLDER": "Définissez le profil que vous recherchez",
             "FEEDBACK": "Recevoir les commentaires des utilisateurs de Taiga?",
-            "ENABLE_TIME_SPENT_FEATURES": "Activer/désactiver les fonctionalités de temps passé pour ce projet",
+            "ENABLE_TIME_SPENT_FEATURES": "Activer les fonctionalités de temps passé pour ce projet?",
             "PUBLIC_PROJECT": "Projet public",
             "PRIVATE_PROJECT": "Projet privé",
             "PRIVATE_OR_PUBLIC": "Quelle est la différence entre les projets publics et privés ?",
