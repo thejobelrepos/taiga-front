@@ -692,24 +692,26 @@ module.directive("tgPromoteIssueToUsButton", ["$rootScope", "$tgRepo", "$tgConfi
 TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate, $loading, $modelTransform) ->
     link = ($scope, $el, $attrs, $model) ->
         notAutoSave = $scope.$eval($attrs.notAutoSave)
-
-        save = (timeSpent) ->
+        
+        save = (issue, timeSpentValue) ->
             $.fn.popover().closeAll()
 
             if notAutoSave
-                $model.$modelValue.time_spent_note = timeSpent
+                $model.$modelValue.time_spent_note = timeSpentValue
                 $scope.$apply()
                 return
 
             currentLoading = $loading()
-                .target($el.find(".created-time-spent"))
+                .target($el.find(".time-spent-button"))
                 .start()
 
             transform = $modelTransform.save (issue) ->
-                issue.time_spent_note = timeSpent
+                issue.time_spent_note = timeSpentValue
+
                 return issue
 
             onSuccess = ->
+                $("div.created-time-spent").text(timeSpentValue + " minutes")
                 $rootScope.$broadcast("object:updated")
                 currentLoading.finish()
 
@@ -722,12 +724,14 @@ TimeSpentButtonDirective = ($rootScope, $repo, $confirm, $translate, $loading, $
         $el.on "click", "a", (event) ->
             event.preventDefault()
 
-            if $el.parent().find(".time-spent-input").is(":hidden")
-                $el.parent().find(".time-spent-input").removeClass("hidden")
+            if $el.parent().parent().find(".time-spent-input").is(":hidden")
+                $el.parent().parent().find(".time-spent-input").removeClass("hidden")
             else
-                $el.parent().find(".time-spent-input").addClass("hidden")
-                timeSpent = $el.parent().find(".time-spent-input").val()
-                save(timeSpent)
+                issue = $model.$modelValue
+                timeSpentValue = $el.parent().parent().find(".time-spent-input input").val()
+
+                $el.parent().parent().find(".time-spent-input").addClass("hidden")
+                save(issue, timeSpentValue)
 
         $scope.$on "$destroy", ->
             $el.off()

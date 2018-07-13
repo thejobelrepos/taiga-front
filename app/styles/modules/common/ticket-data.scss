@@ -232,7 +232,7 @@
         display: block;
     }
     .time-spent-button {
-        background: $red;
+        background: $gray-light;
         display: inline-block;
         margin-right: .5rem;
         padding: 1rem;
@@ -248,7 +248,8 @@
             display: none;
         }
     }
-    .time-spent-input {
-        margin-top: 1rem;
-    }
+}
+
+.time-spent-input {
+    margin-top: 1rem;
 }
