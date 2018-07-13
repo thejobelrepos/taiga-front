@@ -514,6 +514,7 @@
             "RECRUITING_MESSAGE": "Who are you looking for?",
             "RECRUITING_PLACEHOLDER": "Define the profiles you are looking for",
             "FEEDBACK": "Receive feedback from Taiga users?",
+            "ENABLE_TIME_SPENT_FEATURES": "Enable/Disable time spent features for this project",
             "PUBLIC_PROJECT": "Public project",
             "PRIVATE_PROJECT": "Private project",
             "PRIVATE_OR_PUBLIC": "What's the difference between public and private projects?",
