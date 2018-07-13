@@ -301,7 +301,7 @@ module.directive("tgBlockingMessageInput", ["$log", "$tgTemplate", "$compile", B
 # Issue/Userstory blocking message lightbox directive. 
  
 TimeSpentLightboxDirective = ($rootscope, $tgrepo, $confirm, lightboxService, $loading, $modelTransform, $translate) -> 
-    link = ($scope, $el, $attrs, $model) -> 
+    link = ($scope, $el, $attrs, $model) ->
         title = $translate.instant($attrs.title) 
         $el.find("h2.title").text(title) 
  
@@ -1012,6 +1012,12 @@ $confirm, $q, attachmentsService, $template, $compile) ->
             $scope.createEditOpen = true
             lightboxService.open $el, () ->
                 $scope.createEditOpen = false
+
+            console.log($scope.project)
+            if $scope.project.enable_time_spent_features
+                $("div.time-spent").removeClass("hidden")
+            else
+                $("div.time-spent").addClass("hidden")
 
         getAttrs = (mode, data, attrs) ->
             for attr in attrs
