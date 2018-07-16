@@ -696,7 +696,7 @@ module.directive("tgPromoteIssueToUsButton", ["$rootScope", "$tgRepo", "$tgConfi
 ## Time spent button directive
 #############################################################################
 
-TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform) ->
+TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform, $confirm) ->
     link = ($scope, $el, $attrs, $model) ->
         notAutoSave = $scope.$eval($attrs.notAutoSave)
             
@@ -719,8 +719,9 @@ TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform) -
 
             onSuccess = ->
                 $("div.created-time-spent").text(timeSpentValue + " minutes")
-                $rootScope.$broadcast("object:updated")
                 currentLoading.finish()
+                $confirm.notify("success")
+                $rootScope.$broadcast("object:updated");
 
             onError = ->
                 $confirm.notify("error")
@@ -756,5 +757,5 @@ TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform) -
         link: link
     }
 
-module.directive("tgTimeSpentButton", ["$rootScope", "$translate", "$tgLoading", "$tgQueueModelTransformation"
+module.directive("tgTimeSpentButton", ["$rootScope", "$translate", "$tgLoading", "$tgQueueModelTransformation", "$tgConfirm"
                                               TimeSpentButtonDirective])
