@@ -619,7 +619,7 @@
         flex-basis: $width;
         flex-direction: row;
         flex-grow: 0;
-        margin-bottom: $spacing*2;
+        margin-bottom: $spacing * 2;
         main {
             flex-grow: 1;
             margin-right: $spacing;
@@ -746,7 +746,7 @@
         @include popover($pop-width, 60px, 0, '', '', 16px, -7px, ($pop-width / 3));
         &.multiple {
             top: 84px;
-            &:after {
+            &::after {
                 left: 30px;
             }
         }
@@ -820,9 +820,18 @@
             display: block;
             margin: 0;
         }
+        .time-spent {
+            background: $red;
+            border-radius: 4px 4px 0 0;
+            display: block;
+            margin-left: 8px;
+            &:hover {
+                background: #008000;
+            }
+        }
     }
 
-    .blocked-note {
+    .blocked-note .time-spent-note {
         margin-top: .5rem;
     }
 }

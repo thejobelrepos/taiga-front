@@ -167,8 +167,7 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             when "standard" then  @rootscope.$broadcast("genericform:new",
                 {
                     'objType': 'us',
-                    'project': @scope.project,
-                    'statusList': @scope.usStatusList
+                    'project': @scope.project
                 })
             when "bulk" then @rootscope.$broadcast("usform:bulk",
                                                    @scope.projectId, statusId)
@@ -251,9 +250,10 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
             usModel.assigned_to = userid
         @kanbanUserstoriesService.replaceModel(usModel)
 
-        promise = @repo.save(usModel)
-        promise.then null, ->
-            console.log "FAIL" # TODO
+        @repo.save(usModel).then =>
+            @.generateFilters()
+            if @.isFilterDataTypeSelected('assigned_users') || @.isFilterDataTypeSelected('role')
+                @.filtersReloadContent()
 
     onAssignedUsersDeleted: (ctx, userid, usModel) ->
         assignedUsersIds = _.clone(usModel.assigned_users, false)
@@ -269,9 +269,10 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
 
         @kanbanUserstoriesService.replaceModel(usModel)
 
-        promise = @repo.save(usModel)
-        promise.then null, ->
-            console.log "FAIL" # TODO
+        @repo.save(usModel).then =>
+            @.generateFilters()
+            if @.isFilterDataTypeSelected('assigned_users') || @.isFilterDataTypeSelected('role')
+                @.filtersReloadContent()
 
     refreshTagsColors: ->
         return @rs.projects.tagsColors(@scope.projectId).then (tags_colors) =>
@@ -353,7 +354,8 @@ class KanbanController extends mixOf(taiga.Controller, taiga.PageMixin, taiga.Fi
 
     initializeSubscription: ->
         routingKey1 = "changes.project.#{@scope.projectId}.userstories"
-        @events.subscribe @scope, routingKey1, debounceLeading(500, (message) =>
+        randomTimeout = taiga.randomInt(700, 1000)
+        @events.subscribe @scope, routingKey1, debounceLeading(randomTimeout, (message) =>
             @.loadUserstories())
 
     loadInitialData: ->

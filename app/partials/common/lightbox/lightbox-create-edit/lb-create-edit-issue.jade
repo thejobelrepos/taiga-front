@@ -8,15 +8,15 @@ block options
     )
     div.ticket-data-container
         tg-issue-type-button.ticket-status(
-            autosave="false"
+            not-auto-save="true"
             ng-model="obj"
         )
         tg-issue-severity-button.ticket-status(
-            autosave="false"
+            not-auto-save="true"
             ng-model="obj"
         )
         tg-issue-priority-button.ticket-status(
-            autosave="false"
+            not-auto-save="true"
             ng-model="obj"
         )
 
@@ -33,8 +33,19 @@ block options
                 ng-class="{ 'button-red item-unblock': obj.is_blocked, 'item-block': !obj.is_blocked }"
             )
                 tg-svg(svg-icon="icon-lock")
+        div.time-spent
+            label.button.display-time-spent-input(
+                title="Time spent"
+                ng-class="{ 'button-red item-unblock': obj.display_time_spent_input, 'item-block': !obj.display_time_spent_input }"
+            )
+                tg-svg(svg-icon="icon-clock")
 
     tg-blocking-message-input(
         watch="obj.is_blocked"
         ng-model="obj.blocked_note"
+    )
+
+    tg-time-spent-input(
+        watch="obj.display_time_spent_input"
+        ng-model="obj.time_spent_note"
     )

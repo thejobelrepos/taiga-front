@@ -126,6 +126,8 @@ class IssueDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
         @scope.severityById = groupBy(project.severities, (x) -> x.id)
         @scope.priorityList = project.priorities
         @scope.priorityById = groupBy(project.priorities, (x) -> x.id)
+        @scope.project.enableTimeSpentFeatures = project.enable_time_spent_features
+
         return project
 
     loadIssue: ->
@@ -149,6 +151,11 @@ class IssueDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
                     ref: @scope.issue.neighbors.next.ref
                 }
                 @scope.nextUrl = @navUrls.resolve("project-issues-detail", ctx)
+
+            if @scope.project.enableTimeSpentFeatures
+                $("div.created-time-spent").show()
+            else
+                $("div.created-time-spent").hide()
 
     loadInitialData: ->
         project = @.loadProject()
@@ -683,3 +690,71 @@ PromoteIssueToUsButtonDirective = ($rootScope, $repo, $confirm, $translate) ->
 
 module.directive("tgPromoteIssueToUsButton", ["$rootScope", "$tgRepo", "$tgConfirm", "$translate"
                                               PromoteIssueToUsButtonDirective])
+
+
+#############################################################################
+## Time spent button directive
+#############################################################################
+
+TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform) ->
+    link = ($scope, $el, $attrs, $model) ->
+        notAutoSave = $scope.$eval($attrs.notAutoSave)
+            
+        save = (issue, timeSpentValue) ->
+            $.fn.popover().closeAll()
+
+            if notAutoSave
+                $model.$modelValue.time_spent_note = timeSpentValue
+                $scope.$apply()
+                return
+
+            currentLoading = $loading()
+                .target($el.find(".time-spent-button"))
+                .start()
+
+            transform = $modelTransform.save (issue) ->
+                issue.time_spent_note = timeSpentValue
+
+                return issue
+
+            onSuccess = ->
+                $("div.created-time-spent").text(timeSpentValue + " minutes")
+                $rootScope.$broadcast("object:updated")
+                currentLoading.finish()
+
+            onError = ->
+                $confirm.notify("error")
+                currentLoading.finish()
+
+            transform.then(onSuccess, onError)
+
+        $el.on "click", "a", (event) ->
+            event.preventDefault()
+
+            if $el.parent().parent().find(".time-spent-input").is(":hidden")
+                $el.parent().parent().find(".time-spent-input").removeClass("hidden")
+            else
+                issue = $model.$modelValue
+                timeSpentValue = $el.parent().parent().find(".time-spent-input input").val()
+
+                $el.parent().parent().find(".time-spent-input").addClass("hidden")
+                save(issue, timeSpentValue)
+
+        $scope.$on "$destroy", ->
+            $el.off()
+
+        if $scope.project.enable_time_spent_features
+            $el.removeClass("hidden")
+        else
+            $el.hide()
+        
+
+    return {
+        restrict: "AE"
+        require: "ngModel"
+        templateUrl: "issue/time-spent-button.html"
+        link: link
+    }
+
+module.directive("tgTimeSpentButton", ["$rootScope", "$translate", "$tgLoading", "$tgQueueModelTransformation"
+                                              TimeSpentButtonDirective])
