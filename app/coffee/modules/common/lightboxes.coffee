@@ -1013,7 +1013,6 @@ $confirm, $q, attachmentsService, $template, $compile) ->
             lightboxService.open $el, () ->
                 $scope.createEditOpen = false
 
-            console.log($scope.project)
             if $scope.project.enable_time_spent_features
                 $("div.time-spent").removeClass("hidden")
             else
