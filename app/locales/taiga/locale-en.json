@@ -839,7 +839,8 @@
             "WIKI": "Wiki",
             "TEAM": "Team",
             "MEETUP": "Meet Up",
-            "ADMIN": "Admin"
+            "ADMIN": "Admin",
+            "WHOIS": "Whois"
         },
         "NAVIGATION": {
             "ACTION_CREATE_PROJECT": "Create project",
