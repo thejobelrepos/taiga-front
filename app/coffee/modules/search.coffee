@@ -215,7 +215,7 @@ WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)
         link:link
     }
 
-SearchBoxDirective.$inject = [
+WhoisDirective.$inject = [
     "tgProjectService",
     "lightboxService",
     "$tgNavUrls",
