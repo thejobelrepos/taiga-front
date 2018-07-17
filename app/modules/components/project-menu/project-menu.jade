@@ -120,10 +120,10 @@ nav.menu(
             li#nav-whois(ng-if="vm.project.get('enable_time_spent_features')")
                 a(
                     href=""
-                    ng-click="vm.search()"
-                    ng-class="{active: vm.active == 'search'}"
-                    aria-label="{{'PROJECT.SECTION.SEARCH' | translate}}"
+                    ng-click="vm.whois()"
+                    ng-class="{active: vm.active == 'whois'}"
+                    aria-label="{{'PROJECT.SECTION.WHOIS' | translate}}"
                     tabindex="1"
                 )
                     tg-svg(svg-icon="icon-user")
-                    span.helper(translate="PROJECT.SECTION.SEARCH")
+                    span.helper(translate="PROJECT.SECTION.WHOIS")
