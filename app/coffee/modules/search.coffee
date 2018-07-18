@@ -177,9 +177,11 @@ module.directive("tgSearchBox", SearchBoxDirective)
 ## Whois directive
 #############################################################################
 
-WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)->
+WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route, $loading)->
     link = ($scope, $el, $attrs) ->
         input = $el.find("input#whois-search-text")
+        currentLoading = $loading()
+                .target($el.find("a.sync-data"))
 
         openLightbox = () ->
             $lightboxService.open($el).then () ->
@@ -195,6 +197,12 @@ WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)
             if myLittleQuery.length > 2
                 dbLookup(myLittleQuery)
 
+        $el.on "click", "a.sync-data", (event) ->
+            currentLoading.start()
+
+        $scope.$on "$destroy", ->
+            currentLoading.finish()
+
     return {
         templateUrl: "search/lightbox-whois.html",
         link:link
@@ -205,7 +213,8 @@ WhoisDirective.$inject = [
     "lightboxService",
     "$tgNavUrls",
     "$tgLocation",
-    "$route"
+    "$route",
+    "$tgLoading"
 ]
 
 module.directive("tgWhois", WhoisDirective)
