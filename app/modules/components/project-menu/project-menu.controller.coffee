@@ -46,7 +46,7 @@ class ProjectMenuController
 
     whois: () ->
         @lightboxFactory.create("tg-whois", {
-            "class": "lightbox lightbox-search"
+            "class": "lightbox lightbox-whois-search"
         })
 
     _setVideoConference: () ->
