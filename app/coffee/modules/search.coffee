@@ -179,36 +179,18 @@ module.directive("tgSearchBox", SearchBoxDirective)
 
 WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)->
     link = ($scope, $el, $attrs) ->
-        project = null
-
-        submit = debounce 2000, (event) =>
-            event.preventDefault()
-
-            form = $el.find("form").checksley()
-            if not form.validate()
-                return
-
-            text = $el.find("#search-text").val()
-
-            url = $navurls.resolve("project-search", {project: project.get("slug")})
-
-            $scope.$apply ->
-                $lightboxService.close($el)
-
-                $location.path(url)
-                $location.search("text", text).path(url)
-                $route.reload()
-
+        input = $el.find("input#whois-search-text")
 
         openLightbox = () ->
-            project = projectService.project
-
             $lightboxService.open($el).then () ->
-                $el.find("#search-text").focus()
-
-        $el.on "submit", "form", submit
+                $el.find("#whois-search-text").focus()
 
         openLightbox()
+         
+        $el.on "textInput input", input.val, (event) ->
+            myLittleQuery = input.val
+            # do something...
+            console.log(myLittleQuery)
 
     return {
         templateUrl: "search/lightbox-whois.html",
