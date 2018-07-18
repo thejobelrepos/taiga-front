@@ -1071,6 +1071,10 @@
             "TITLE": "Search",
             "PLACEHOLDER_SEARCH": "What are you looking for?"
         },
+        "WHOIS": {
+            "TITLE": "Whois Search",
+            "INPUT_PLACEHOLDER": "Who are you looking for?"
+        },
         "ADD_EDIT_SPRINT": {
             "TITLE": "New sprint",
             "PLACEHOLDER_SPRINT_NAME": "sprint name",

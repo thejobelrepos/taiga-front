@@ -187,8 +187,8 @@ WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)
 
         openLightbox()
          
-        $el.on "textInput input", input.val, (event) ->
-            myLittleQuery = input.val
+        $el.on "textInput input", input.val(), (event) ->
+            myLittleQuery = input.val()
             # do something...
             console.log(myLittleQuery)
 
