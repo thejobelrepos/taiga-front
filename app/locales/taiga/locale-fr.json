@@ -1072,7 +1072,8 @@
         },
         "WHOIS": {
             "TITLE": "Recherche Whois",
-            "INPUT_PLACEHOLDER": "Qui cherchez-vous ?"
+            "INPUT_PLACEHOLDER": "Qui cherchez-vous ?",
+            "SYNC_BUTTON": "Sync données"
         },
         "ADD_EDIT_SPRINT": {
             "TITLE": "Nouveau sprint",

@@ -1073,7 +1073,8 @@
         },
         "WHOIS": {
             "TITLE": "Whois Search",
-            "INPUT_PLACEHOLDER": "Who are you looking for?"
+            "INPUT_PLACEHOLDER": "Who are you looking for?",
+            "SYNC_BUTTON": "Sync data"
         },
         "ADD_EDIT_SPRINT": {
             "TITLE": "New sprint",

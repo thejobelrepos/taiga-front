@@ -184,13 +184,16 @@ WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route)
         openLightbox = () ->
             $lightboxService.open($el).then () ->
                 $el.find("#whois-search-text").focus()
+        
+        dbLookup = (query) ->
+            console.log("dbLookup: query is '" + query + "'\n")
 
         openLightbox()
          
         $el.on "textInput input", input.val(), (event) ->
             myLittleQuery = input.val()
-            # do something...
-            console.log(myLittleQuery)
+            if myLittleQuery.length > 2
+                dbLookup(myLittleQuery)
 
     return {
         templateUrl: "search/lightbox-whois.html",
