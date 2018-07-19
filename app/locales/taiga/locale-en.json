@@ -516,8 +516,6 @@
             "FEEDBACK": "Receive feedback from Taiga users?",
             "ENABLE_TIME_SPENT_FEATURES": "Enable time spent features for this project?",
             "ENABLE_JOBEL_INTEGRATION_FEATURES": "Enable JOBEL integration features for this project?",
-            "SUPPORT_ONLY_FEATURE_WARNING_TITLE": "WARNING:",
-            "SUPPORT_ONLY_FEATURE_WARNING_DESCRIPTION": "This feature is for technical support ONLY. Are you sure you want to continue?",
             "PUBLIC_PROJECT": "Public project",
             "PRIVATE_PROJECT": "Private project",
             "PRIVATE_OR_PUBLIC": "What's the difference between public and private projects?",
