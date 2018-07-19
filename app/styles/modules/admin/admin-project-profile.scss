@@ -3,7 +3,8 @@
     @include profile-form;
     .looking-for-people,
     .get-feedback,
-    .enable-time-spent-features {
+    .enable-time-spent-features,
+    .enable-jobel-integration-features {
         @include font-type(light);
         border-bottom: 1px solid $whitish;
         padding: 1rem 0;
@@ -14,7 +15,8 @@
     }
     .looking-for-people-selector,
     .get-feedback-inner,
-    .enable-time-spent-features-inner {
+    .enable-time-spent-features-inner,
+    .enable-jobel-integration-features {
         align-items: center;
         display: flex;
         svg {
