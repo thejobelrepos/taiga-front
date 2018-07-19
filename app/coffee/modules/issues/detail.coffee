@@ -739,7 +739,8 @@ TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform, $
                 timeSpentValue = $el.parent().parent().find(".time-spent-input input").val()
 
                 $el.parent().parent().find(".time-spent-input").addClass("hidden")
-                save(issue, timeSpentValue)
+                if timeSpentValue
+                    save(issue, timeSpentValue)
 
         $scope.$on "$destroy", ->
             $el.off()
