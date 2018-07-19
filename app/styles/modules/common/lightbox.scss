@@ -162,6 +162,11 @@
         padding-left: 25px;
         .user-list-single {
             display: flex;
+            height: 40px;
+            margin-bottom: 1px;
+            &:hover {
+                background: rgba(91, 130, 0, 0.314);
+            }
             .user-list-avatar {
                 padding-right: 20px;
                 a {
