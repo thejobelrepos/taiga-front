@@ -220,20 +220,27 @@ WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route,
 
             if matches
                 $scope.matches = matches
-                console.log($scope.matches)
             else
                 $scope.matches = null
-                console.log($scope.matches)
+
             render(matches)
 
         openLightbox()
          
         $el.on "textInput input onkeydown", input.val(), (event) ->
-            myLittleQuery = input.val().toLowerCase()
+            query = input.val().toLowerCase()
+
+            # We don't actually -need- to limit anything, as all the data
+            # is already loaded and cached
+            ###
             if myLittleQuery.length > 2
                 dbLookup(myLittleQuery)
+
             else
                 dbLookup(null)
+            ###
+
+            dbLookup(query)
 
         $el.on "click", "a.sync-data", (event) ->
             currentLoading.target($el.find("a.sync-data"))

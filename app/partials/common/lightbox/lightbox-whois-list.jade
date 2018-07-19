@@ -4,7 +4,7 @@
     .user-list-avatar
         a(
             href=""
-            title="{{'COMMON.ASSIGNED_TO' | translate}}"
+            title!="<%- user %>"
         )
             img(
                 //- src!="<%- user %>"
@@ -16,11 +16,6 @@
         ng-non-bindable
     )
         | <%-user %>
-    tg-svg.remove-assigned-to(
-        svg-icon="icon-close",
-        svg-title-translate="COMMON.ASSIGNED_TO.REMOVE_ASSIGNED",
-        data-user-id!="<%- user %>"
-    )
 <% }) %>
 
 <% _.each(users, function(user) { %>
@@ -28,7 +23,7 @@
     .user-list-avatar
         a(
             href="#"
-            title="{{'COMMON.ASSIGNED_TO.TITLE' | translate}}"
+            title!="<%- user %>"
         )
             img(
                 //- src!="<%- user %>"
@@ -43,6 +38,6 @@
 <% }) %>
 
 <% if (showMore) { %>
-.more-watchers
+.more-users
     span(translate="COMMON.ASSIGNED_TO.TOO_MANY")
 <% } %>
