@@ -1,0 +1,48 @@
+//- <% if (selected) { %>
+<% _.each(selected, function(user) { %>
+.user-list-multiple.is-active
+    .user-list-avatar
+        a(
+            href=""
+            title="{{'COMMON.ASSIGNED_TO' | translate}}"
+        )
+            img(
+                //- src!="<%- user %>"
+                ng-src="/#{v}/images/unnamed.png"
+            )
+    a.user-list-name(
+        href=""
+        title!="<%- user %>"
+        ng-non-bindable
+    )
+        | <%-user %>
+    tg-svg.remove-assigned-to(
+        svg-icon="icon-close",
+        svg-title-translate="COMMON.ASSIGNED_TO.REMOVE_ASSIGNED",
+        data-user-id!="<%- user %>"
+    )
+<% }) %>
+
+<% _.each(users, function(user) { %>
+.user-list-single
+    .user-list-avatar
+        a(
+            href="#"
+            title="{{'COMMON.ASSIGNED_TO.TITLE' | translate}}"
+        )
+            img(
+                //- src!="<%- user %>"
+                ng-src="/#{v}/images/unnamed.png"
+            )
+    a.user-list-name(
+        href=""
+        title!="<%- user %>"
+        ng-non-bindable
+    )
+        | <%- user %>
+<% }) %>
+
+<% if (showMore) { %>
+.more-watchers
+    span(translate="COMMON.ASSIGNED_TO.TOO_MANY")
+<% } %>

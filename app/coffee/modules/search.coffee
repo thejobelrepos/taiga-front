@@ -177,33 +177,70 @@ module.directive("tgSearchBox", SearchBoxDirective)
 ## Whois directive
 #############################################################################
 
-WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route, $loading)->
+WhoisDirective = (projectService, $lightboxService, $navurls, $location, $route, $loading, $template, $compile)->
     link = ($scope, $el, $attrs) ->
         input = $el.find("input#whois-search-text")
         currentLoading = $loading()
-                .target($el.find("a.sync-data"))
+        users = [
+            "Tristan Cormier",
+            "Samwise Roussy",
+            "Claire Canette",
+            "Zulu Bongo",
+            "Tintin Brindassier",
+            "Clark Wayne",
+            "Daniel Leinad",
+            "Bobby Ybbob"
+        ]
+        whoisListTemplate = $template.get("common/lightbox/lightbox-whois-list.html", true)
+
+        # Render the specific list of users.
+        render = (users) ->
+            visibleUsers = _.slice(users, 0, 5)
+
+            visibleUsers = _.map visibleUsers, (user) ->
+                return user
+
+            ctx = {
+                selected: false
+                users: visibleUsers
+                showMore: users.length > 5
+            }
+
+            html = whoisListTemplate(ctx)
+            html = $compile(html)($scope)
+            $el.find(".whois-results-list").html(html)   
 
         openLightbox = () ->
             $lightboxService.open($el).then () ->
                 $el.find("#whois-search-text").focus()
         
         dbLookup = (query) ->
-            console.log("dbLookup: query is '" + query + "'\n")
+            matches = _.filter users, (predicate) ->
+                return ~predicate.toLowerCase().indexOf(query)
+
+            if matches
+                $scope.matches = matches
+                console.log($scope.matches)
+            else
+                $scope.matches = null
+                console.log($scope.matches)
+            render(matches)
 
         openLightbox()
          
-        $el.on "textInput input", input.val(), (event) ->
-            myLittleQuery = input.val()
+        $el.on "textInput input onkeydown", input.val(), (event) ->
+            myLittleQuery = input.val().toLowerCase()
             if myLittleQuery.length > 2
                 dbLookup(myLittleQuery)
+            else
+                dbLookup(null)
 
         $el.on "click", "a.sync-data", (event) ->
+            currentLoading.target($el.find("a.sync-data"))
             currentLoading.start()
 
-        $scope.$on "$destroy", ->
-            currentLoading.finish()
-
     return {
+        scope: true,
         templateUrl: "search/lightbox-whois.html",
         link:link
     }
@@ -214,7 +251,9 @@ WhoisDirective.$inject = [
     "$tgNavUrls",
     "$tgLocation",
     "$route",
-    "$tgLoading"
+    "$tgLoading",
+    "$tgTemplate",
+    "$compile"
 ]
 
 module.directive("tgWhois", WhoisDirective)
