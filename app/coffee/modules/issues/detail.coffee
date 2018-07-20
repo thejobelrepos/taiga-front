@@ -30,6 +30,7 @@ joinStr = @.taiga.joinStr
 groupBy = @.taiga.groupBy
 bindOnce = @.taiga.bindOnce
 bindMethods = @.taiga.bindMethods
+normalizeString = @.taiga.normalizeString
 
 module = angular.module("taigaIssues")
 
@@ -58,7 +59,8 @@ class IssueDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
     ]
 
     constructor: (@scope, @rootscope, @repo, @confirm, @rs, @params, @q, @location,
-                  @log, @appMetaService, @analytics, @navUrls, @translate, @modelTransform, @errorHandlingService, @projectService) ->
+                  @log, @appMetaService, @analytics, @navUrls, @translate, @modelTransform,
+                  @errorHandlingService, @projectService) ->
         bindMethods(@)
 
         @scope.issueRef = @params.issueref
@@ -104,6 +106,11 @@ class IssueDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
 
         @scope.$on "custom-attributes-values:edit", =>
             @rootscope.$broadcast("object:updated")
+
+        @scope.$on "assign-sprint-to-issue:success", (ctx, milestoneId) =>
+            @rootscope.$broadcast("object:updated")
+            @scope.issue.milestone = milestoneId
+            @.loadSprint()
 
     initializeOnDeleteGoToUrl: ->
        ctx = {project: @scope.project.slug}
@@ -157,12 +164,18 @@ class IssueDetailController extends mixOf(taiga.Controller, taiga.PageMixin)
             else
                 $("div.created-time-spent").hide()
 
+    loadSprint: ->
+        if @scope.issue.milestone
+            return @rs.sprints.get(@scope.issue.project, @scope.issue.milestone).then (sprint) =>
+                @scope.sprint = sprint
+                return sprint
+
     loadInitialData: ->
         project = @.loadProject()
 
         @.fillUsersAndRoles(project.members, project.roles)
 
-        return @.loadIssue()
+        return @.loadIssue().then(=> @.loadSprint())
 
     ###
     # Note: This methods (onUpvote() and onDownvote()) are related to tg-vote-button.
@@ -760,3 +773,57 @@ TimeSpentButtonDirective = ($rootScope, $translate, $loading, $modelTransform, $
 
 module.directive("tgTimeSpentButton", ["$rootScope", "$translate", "$tgLoading", "$tgQueueModelTransformation", "$tgConfirm"
                                               TimeSpentButtonDirective])
+
+#############################################################################
+## Add Issue to Sprint button directive
+#############################################################################
+
+AssignSprintToIssueButtonDirective = ($rootScope, $rs, $repo, $loading, $translate, lightboxService) ->
+    link = ($scope, $el, $attrs, $model) ->
+        avaliableMilestones = []
+        issue = null
+
+        $el.on "click", "a", (event) ->
+            event.preventDefault()
+            event.stopPropagation()
+            title = $translate.instant("ISSUES.ACTION_ASSIGN_SPRINT")
+            issue = $model.$modelValue
+            $rs.sprints.list($scope.projectId, null).then (data) ->
+                $scope.milestones = data.milestones
+                avaliableMilestones = angular.copy($scope.milestones)
+                lightboxService.open($el.find(".lightbox-assign-sprint-to-issue"))
+
+        $scope.$on "$destroy", ->
+            $el.off()
+
+        existsMilestone = (needle, haystack) ->
+            haystack = normalizeString(haystack.toUpperCase())
+            needle = normalizeString(needle.toUpperCase())
+            return _.includes(haystack, needle)
+
+        $scope.filterMilestones = (filterText) ->
+            $scope.milestones = avaliableMilestones.filter((milestone) ->
+                existsMilestone(filterText, milestone.name)
+            )
+
+        $scope.saveIssueToSprint = (selectedSprintId) ->
+            currentLoading = $loading().target($el.find(".e2e-select-related-sprint-button")).start()
+            issue.setAttr('milestone', selectedSprintId)
+            $repo.save(issue, true).then (data) ->
+                currentLoading.finish()
+                lightboxService.close($el.find(".lightbox-assign-sprint-to-issue"))
+                $scope.$broadcast("assign-sprint-to-issue:success", selectedSprintId)
+
+
+
+    return {
+        link: link
+        restrict: "EA"
+        require: "ngModel"
+        templateUrl: "issue/assign-sprint-to-issue-button.html"
+
+    }
+
+module.directive("tgAssignSprintToIssueButton", ["$rootScope", "$tgResources", "$tgRepo",
+                "$tgLoading", "$translate", "lightboxService",
+                AssignSprintToIssueButtonDirective] )

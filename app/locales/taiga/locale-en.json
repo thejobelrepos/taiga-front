@@ -49,7 +49,8 @@
         "CARD": {
             "ASSIGN_TO": "Assign To",
             "EDIT": "Edit card",
-            "DELETE": "Delete card"
+            "DELETE": "Delete card",
+            "REMOVE_ISSUE_FROM_SPRINT": "Remove issue from sprint"
         },
         "FORM_ERRORS": {
             "DEFAULT_MESSAGE": "This value seems to be invalid.",
@@ -1106,7 +1107,12 @@
             "PLACEHOLDER_DESCRIPTION": "Please add descriptive text to help others better understand this {{ objName }}",
             "NEW": "New {{ objName }}",
             "EDIT": "Edit {{ objName }}",
-            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?"
+            "ADD_EXISTING": "Add {{ objName }} to {{ targetName }}",
+            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?",
+            "EXISTING_OBJECT": "Existing {{ objName }}",
+            "NEW_OBJECT": "New {{ objName }}",
+            "CHOOSE_EXISTING": "What's the {{ objName }}?",
+            "NO_ITEMS_FOUND": "It looks like nothing was found with your search criteria"
         },
         "DELETE_DUE_DATE": {
             "TITLE": "Delete due date",
@@ -1360,6 +1366,8 @@
         "TITLE_ACTION_ASSIGN": "Assign task",
         "PLACEHOLDER_CARD_TITLE": "This could be a task",
         "PLACEHOLDER_CARD_TEXT": "Split Stories into tasks to track them separately",
+        "NEW_ISSUE": "New issue",
+        "EXISTING_ISSUE": "Existing issue",
         "TABLE": {
             "COLUMN": "User story",
             "TITLE_ACTION_FOLD": "Fold column",
@@ -1425,15 +1433,25 @@
         "SECTION_NAME": "Issue",
         "ACTION_NEW_ISSUE": "+ NEW ISSUE",
         "ACTION_PROMOTE_TO_US": "Promote to User Story",
+        "ACTION_ASSIGN_SPRINT": "Add issue to Sprint",
+        "ACTION_REMOVE_FROM_SPRINT": "Remove issue from Sprint {{ sprintName }}",
         "PROMOTED": "This issue has been promoted to US:",
         "EXTERNAL_REFERENCE": "This issue has been created from",
         "GO_TO_EXTERNAL_REFERENCE": "Go to origin",
         "ACTION_DELETE": "Delete issue",
         "LIGHTBOX_TITLE_BLOKING_ISSUE": "Blocking issue",
+        "LINK_TASKBOARD": "Taskboard",
+        "TITLE_LINK_TASKBOARD": "Go to the taskboard",
+        "FILTER_SPRINTS": "Filter Sprints",
+        "CHOOSE_SPRINT": "What's the user Sprint?",
         "FIELDS": {
             "PRIORITY": "Priority",
             "SEVERITY": "Severity",
             "TYPE": "Type"
+        },
+        "CONFIRM_REMOVE_FROM_SPRINT": {
+            "TITLE": "Remove issue from sprint",
+            "MESSAGE": "Are you sure you want to remove this issue from the sprint?"
         },
         "CONFIRM_PROMOTE": {
             "TITLE": "Promote this issue to a new user story",

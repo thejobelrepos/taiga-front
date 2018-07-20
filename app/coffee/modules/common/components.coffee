@@ -24,6 +24,7 @@
 
 taiga = @.taiga
 bindOnce = @.taiga.bindOnce
+normalizeString = @.taiga.normalizeString
 
 module = angular.module("taigaCommon")
 
@@ -538,15 +539,6 @@ $translate, $compile, $currentUserService, avatarService) ->
         isEditable = ->
             return $scope.project?.my_permissions?.indexOf($attrs.requiredPerm) != -1
 
-        normalizeString = (string) ->
-            normalizedString = string
-            normalizedString = normalizedString.replace("Á", "A").replace("Ä", "A").replace("À", "A")
-            normalizedString = normalizedString.replace("É", "E").replace("Ë", "E").replace("È", "E")
-            normalizedString = normalizedString.replace("Í", "I").replace("Ï", "I").replace("Ì", "I")
-            normalizedString = normalizedString.replace("Ó", "O").replace("Ö", "O").replace("Ò", "O")
-            normalizedString = normalizedString.replace("Ú", "U").replace("Ü", "U").replace("Ù", "U")
-            return normalizedString
-
         filterUsers = (text, user) ->
             username = user.full_name_display.toUpperCase()
             username = normalizeString(username)
@@ -569,10 +561,10 @@ $translate, $compile, $currentUserService, avatarService) ->
         renderUser = (assignedObject) ->
             if assignedObject?.assigned_to
                 $scope.selected = assignedObject.assigned_to
-                assignedObject.assigned_to_extra_info = $scope.usersById[$scope.selected]
-                $scope.fullName = assignedObject.assigned_to_extra_info?.full_name_display
+                assigned_to_extra_info = $scope.usersById[$scope.selected]
+                $scope.fullName = assigned_to_extra_info?.full_name_display
                 $scope.isUnassigned = false
-                $scope.avatar = avatarService.getAvatar(assignedObject.assigned_to_extra_info)
+                $scope.avatar = avatarService.getAvatar(assigned_to_extra_info)
                 $scope.bg = $scope.avatar.bg
                 $scope.isIocaine = assignedObject?.is_iocaine
             else
@@ -653,15 +645,6 @@ $translate, $compile, $currentUserService, avatarService) ->
 
         isAssigned = ->
             return currentAssignedIds.length > 0
-
-        normalizeString = (string) ->
-            normalizedString = string
-            normalizedString = normalizedString.replace("Á", "A").replace("Ä", "A").replace("À", "A")
-            normalizedString = normalizedString.replace("É", "E").replace("Ë", "E").replace("È", "E")
-            normalizedString = normalizedString.replace("Í", "I").replace("Ï", "I").replace("Ì", "I")
-            normalizedString = normalizedString.replace("Ó", "O").replace("Ö", "O").replace("Ò", "O")
-            normalizedString = normalizedString.replace("Ú", "U").replace("Ü", "U").replace("Ù", "U")
-            return normalizedString
 
         filterUsers = (text, user) ->
             username = user.full_name_display.toUpperCase()
