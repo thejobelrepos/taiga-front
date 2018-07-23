@@ -295,6 +295,112 @@ BlockingMessageInputDirective = ($log, $template, $compile) ->
 module.directive("tgBlockingMessageInput", ["$log", "$tgTemplate", "$compile", BlockingMessageInputDirective])
 
 
+############################################################################# 
+## Time spent Lightbox Directive 
+############################################################################# 
+ 
+# Issue/Userstory blocking message lightbox directive. 
+ 
+TimeSpentLightboxDirective = ($rootscope, $tgrepo, $confirm, lightboxService, $loading, $modelTransform, $translate) -> 
+    link = ($scope, $el, $attrs, $model) ->
+        title = $translate.instant($attrs.title) 
+        $el.find("h2.title").text(title) 
+ 
+        unblock = (finishCallback) => 
+            transform = $modelTransform.save (item) -> 
+                item.time_spent_note = "" 
+ 
+                return item 
+ 
+            transform.then -> 
+                $confirm.notify("success") 
+                $rootscope.$broadcast("object:updated") 
+                finishCallback() 
+ 
+            transform.then null, -> 
+                $confirm.notify("error") 
+                item.revert() 
+ 
+            transform.finally -> 
+                finishCallback() 
+ 
+            return transform 
+ 
+        block = () -> 
+            currentLoading = $loading() 
+                .target($el.find(".button-green")) 
+                .start() 
+ 
+            transform = $modelTransform.save (item) -> 
+                item.time_spent_note = $el.find(".reason").val() 
+ 
+                return item 
+ 
+            transform.then -> 
+                $confirm.notify("success") 
+                $rootscope.$broadcast("object:updated") 
+ 
+            transform.then null, -> 
+                $confirm.notify("error") 
+ 
+            transform.finally -> 
+                currentLoading.finish() 
+                lightboxService.close($el) 
+ 
+        $scope.$on "block", -> 
+            $el.find(".reason").val($model.$modelValue.time_spent_note) 
+            lightboxService.open($el) 
+ 
+        $scope.$on "unblock", (event, model, finishCallback) => 
+            unblock(finishCallback) 
+ 
+        $scope.$on "$destroy", -> 
+            $el.off() 
+ 
+        $el.on "click", ".button-green", (event) -> 
+            event.preventDefault() 
+ 
+            block() 
+ 
+    return { 
+        templateUrl: "common/lightbox/lightbox-time-spent.html" 
+        link: link 
+        require: "ngModel" 
+    } 
+ 
+module.directive("tgLbTimeSpent", ["$rootScope", "$tgRepo", "$tgConfirm", "lightboxService", "$tgLoading", "$tgQueueModelTransformation", "$translate", TimeSpentLightboxDirective]) 
+ 
+
+#############################################################################
+## Generic Lightbox Time-Spent Input Directive
+#############################################################################
+
+TimeSpentInputDirective = ($log, $template, $compile) ->
+    template = $template.get("common/lightbox/lightbox-time-spent-input.html", true)
+
+    link = ($scope, $el, $attrs, $model) ->
+        if not $attrs.watch
+            return $log.error "No watch attribute on tg-time-spent-input directive"
+
+        $scope.$watch $attrs.watch, (value) ->
+            if value is not undefined and value == true
+                $el.find(".time-spent-note").removeClass("hidden")
+            else
+                $el.find(".time-spent-note").addClass("hidden")
+
+    templateFn = ($el, $attrs) ->
+        return template({ngmodel: $attrs.ngModel})
+
+    return {
+        template: templateFn
+        link: link
+        require: "ngModel"
+        restrict: "EA"
+    }
+
+module.directive("tgTimeSpentInput", ["$log", "$tgTemplate", "$compile", TimeSpentInputDirective])
+
+
 #############################################################################
 ## Creare Bulk Userstories Lightbox Directive
 #############################################################################
@@ -888,6 +994,22 @@ $confirm, $q, attachmentsService, $template, $compile) ->
             $scope.lightboxOpen = true
             lightboxService.open($el)
 
+ 
+            $scope.createEditOpen = true
+            lightboxService.open $el, () ->
+                $scope.createEditOpen = false
+
+            if $scope.project.enable_time_spent_features
+                $("div.time-spent").removeClass("hidden")
+            else
+                $("div.time-spent").addClass("hidden")
+
+        getAttrs = (mode, data, attrs) ->
+            for attr in attrs
+                if !data[attr]
+                    return $log.error "`#{attr}` attribute required in `genericform:#{mode}` event"
+                $scope[attr] = data[attr]
+
         resetAttachments = () ->
             attachmentsToAdd = Immutable.List()
             attachmentsToDelete = Immutable.List()
@@ -1043,6 +1165,10 @@ $confirm, $q, attachmentsService, $template, $compile) ->
 
         $el.on "click", ".is-blocked", (event) ->
             $scope.obj.is_blocked = not $scope.obj.is_blocked
+            $scope.$apply()
+
+        $el.on "click", ".display-time-spent-input", (event) ->
+            $scope.obj.display_time_spent_input = not $scope.obj.display_time_spent_input
             $scope.$apply()
 
         $el.on "click", ".iocaine", (event) ->

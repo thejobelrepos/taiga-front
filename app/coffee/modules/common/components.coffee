@@ -159,6 +159,8 @@ CreatedByDisplayDirective = ($template, $compile, $translate, $navUrls, avatarSe
 
                 $scope.date =  moment(model.created_date).format($translate.instant("COMMON.DATETIME"))
 
+                $scope.time_spent_value = model.time_spent_note
+
         $scope.$on "$destroy", ->
             $el.off()
 

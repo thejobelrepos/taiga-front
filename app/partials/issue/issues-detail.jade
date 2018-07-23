@@ -147,6 +147,18 @@ div.wrapper(
                 on-delete-go-to-url="onDeleteGoToUrl",
                 ng-model="issue"
             )
+            tg-time-spent-button(
+                tg-check-permission="modify_issue",
+                ng-model="issue"
+            )  
+            
+        fieldset.time-spent-input.hidden
+            input(
+                type="number"
+                data-type="digits"
+                ng-attr-placeholder="{{'COMMON.TIME_SPENT_NOTE' | translate}}"
+            )
+
 
     div.lightbox.lightbox-block(tg-lb-block, ng-model="issue", title="ISSUES.LIGHTBOX_TITLE_BLOKING_ISSUE")
     div.lightbox.lightbox-select-user(tg-lb-assignedto)

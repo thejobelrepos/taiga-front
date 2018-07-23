@@ -24,6 +24,7 @@
         "UNBLOCK": "Unblock",
         "UNBLOCK_TITLE": "Unblock this item",
         "BLOCKED_NOTE": "Why is this blocked?",
+        "TIME_SPENT_NOTE": "Estimated time (minutes)",
         "BLOCKED_REASON": "Please explain the reason",
         "CREATED_BY": "Created by {{fullDisplayName}}",
         "CLOSE": "close",
@@ -514,6 +515,8 @@
             "RECRUITING_MESSAGE": "Who are you looking for?",
             "RECRUITING_PLACEHOLDER": "Define the profiles you are looking for",
             "FEEDBACK": "Receive feedback from Taiga users?",
+            "ENABLE_TIME_SPENT_FEATURES": "Enable time spent features for this project?",
+            "ENABLE_JOBEL_INTEGRATION_FEATURES": "Enable JOBEL integration features for this project?",
             "PUBLIC_PROJECT": "Public project",
             "PRIVATE_PROJECT": "Private project",
             "PRIVATE_OR_PUBLIC": "What's the difference between public and private projects?",
@@ -838,7 +841,8 @@
             "WIKI": "Wiki",
             "TEAM": "Team",
             "MEETUP": "Meet Up",
-            "ADMIN": "Admin"
+            "ADMIN": "Admin",
+            "WHOIS": "Whois"
         },
         "NAVIGATION": {
             "ACTION_CREATE_PROJECT": "Create project",
@@ -1068,6 +1072,11 @@
         "SEARCH": {
             "TITLE": "Search",
             "PLACEHOLDER_SEARCH": "What are you looking for?"
+        },
+        "WHOIS": {
+            "TITLE": "Whois Search",
+            "INPUT_PLACEHOLDER": "Who are you looking for?",
+            "SYNC_BUTTON": "Sync data"
         },
         "ADD_EDIT_SPRINT": {
             "TITLE": "New sprint",
