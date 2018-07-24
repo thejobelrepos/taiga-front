@@ -889,6 +889,7 @@
     }
 
     .ticket-detail-settings {
+        display: flex;
         height: 52px;
         justify-content: left;
         margin: 1rem 0 0;
@@ -896,6 +897,8 @@
             border: 0;
             padding: 12px 13px;
             width: auto;
+            height: 48px;
+            margin-right: 3px;
         }
         .item-block,
         .item-unblock {
@@ -906,7 +909,7 @@
             background: $red;
             border-radius: 4px 4px 0 0;
             display: block;
-            margin-left: 8px;
+            margin-left: 3px;
             &:hover {
                 background: #008000;
             }
@@ -914,7 +917,7 @@
     }
 
     .blocked-note .time-spent-note {
-        margin-top: .5rem;
+        margin-top: 1rem;
     }
 }
 
