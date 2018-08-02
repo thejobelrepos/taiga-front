@@ -50,7 +50,8 @@
             "ASSIGN_TO": "Assign To",
             "EDIT": "Edit card",
             "DELETE": "Delete card",
-            "REMOVE_ISSUE_FROM_SPRINT": "Remove issue from sprint"
+            "DELETE_ISSUE": "Delete issue",
+            "DETACH_ISSUE_FROM_SPRINT": "Detach issue from sprint"
         },
         "FORM_ERRORS": {
             "DEFAULT_MESSAGE": "This value seems to be invalid.",
@@ -1454,6 +1455,10 @@
         "CONFIRM_DETACH_FROM_SPRINT": {
             "TITLE": "Detach issue from Sprint",
             "MESSAGE": "You are about to detach the issue from the sprint"
+        },
+        "CONFIRM_CHANGE_FROM_SPRINT": {
+            "TITLE": "Change issue from Sprint",
+            "MESSAGE": "Are you sure you want to change the issue sprint from {{ oldSprintName }} to {{ newSprintName }}"
         },
         "CONFIRM_PROMOTE": {
             "TITLE": "Promote this issue to a new user story",
