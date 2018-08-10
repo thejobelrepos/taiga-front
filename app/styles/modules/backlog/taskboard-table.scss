@@ -171,6 +171,7 @@ $column-padding: .5rem 1rem;
                 @include ellipsis(100%);
             }
             .points-value,
+            .us-data,
             .icon-add,
             .icon-bulk {
                 display: none;
@@ -231,6 +232,14 @@ $column-padding: .5rem 1rem;
         color: $gray-light;
         span {
             margin-right: .1rem;
+        }
+    }
+    .us-data {
+        display: flex;
+    }
+    .due-date {
+        tg-svg {
+            position: inherit;
         }
     }
     tg-svg {

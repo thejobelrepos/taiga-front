@@ -776,7 +776,7 @@ module.directive("tgLightboxLeaveProjectWarning", ["lightboxService", LightboxLe
 ## Set Due Date Lightbox Directive
 #############################################################################
 
-SetDueDateDirective = (lightboxService, $loading, $translate, $confirm, $modelTransform) ->
+SetDueDateDirective = ($rootscope, lightboxService, $loading, $translate, $confirm, $modelTransform) ->
     link = ($scope, $el, attrs) ->
         prettyDate = $translate.instant("COMMON.PICKERDATE.FORMAT")
         lightboxService.open($el)
@@ -823,6 +823,7 @@ SetDueDateDirective = (lightboxService, $loading, $translate, $confirm, $modelTr
             transform.finally ->
                 currentLoading.finish()
                 lightboxService.close($el)
+                $rootscope.$broadcast("object:updated")
 
         $el.on "click", ".submit-button", (event) ->
             event.preventDefault()
@@ -853,7 +854,7 @@ SetDueDateDirective = (lightboxService, $loading, $translate, $confirm, $modelTr
         scope: true
     }
 
-module.directive("tgLbSetDueDate", ["lightboxService", "$tgLoading", "$translate", "$tgConfirm"
+module.directive("tgLbSetDueDate", ["$rootScope", "lightboxService", "$tgLoading", "$translate", "$tgConfirm"
                                     "$tgQueueModelTransformation", SetDueDateDirective])
 
 
@@ -999,21 +1000,10 @@ $confirm, $q, attachmentsService, $template, $compile) ->
             $scope.lightboxOpen = true
             lightboxService.open($el)
 
- 
-            $scope.createEditOpen = true
-            lightboxService.open $el, () ->
-                $scope.createEditOpen = false
-
             if $scope.project.enable_time_spent_features
                 $("div.time-spent").removeClass("hidden")
             else
                 $("div.time-spent").addClass("hidden")
-
-        getAttrs = (mode, data, attrs) ->
-            for attr in attrs
-                if !data[attr]
-                    return $log.error "`#{attr}` attribute required in `genericform:#{mode}` event"
-                $scope[attr] = data[attr]
 
         resetAttachments = () ->
             attachmentsToAdd = Immutable.List()
@@ -1257,7 +1247,7 @@ module.directive("tgLbCreateEdit", [
 
 debounceLeading = @.taiga.debounceLeading
 
-RelateToEpicLightboxDirective = ($rootScope, $confirm, lightboxService, tgCurrentUserService
+RelateToEpicLightboxDirective = ($rootScope, $confirm, lightboxService, $tgCurrentUserService
 tgResources, $tgResources, $epicsService, tgAnalytics) ->
     link = ($scope, $el, $attrs) ->
         us = null
@@ -1265,17 +1255,14 @@ tgResources, $tgResources, $epicsService, tgAnalytics) ->
         $scope.projects = null
         $scope.projectEpics = Immutable.List()
         $scope.loading = false
+        $scope.selectedProject = $scope.project.id
 
         newEpicForm = $el.find(".new-epic-form").checksley()
         existingEpicForm = $el.find(".existing-epic-form").checksley()
 
         loadProjects = ->
             if $scope.projects == null
-                $tgResources.projects.list({
-                    blocked_code: 'null',
-                    is_epics_activated: true
-                }).then (data) ->
-                    $scope.projects = data
+                $scope.projects = $tgCurrentUserService.projects.get("unblocked")
 
         filterEpics = (selectedProjectId, filterText) ->
             tgResources.epics.listInAllProjects(
@@ -1291,6 +1278,11 @@ tgResources, $tgResources, $epicsService, tgAnalytics) ->
                     filteredData = data.filter((epic) -> excludeIds.indexOf(epic.get('id')) == -1)
                     $scope.projectEpics = filteredData
 
+        selectProject = (selectedProjectId) ->
+            $scope.selectedEpic = null
+            $scope.searchEpic = ""
+            filterEpics(selectedProjectId, $scope.searchEpic)
+
         $el.on "click", ".close", (event) ->
             event.preventDefault()
             lightboxService.close($el)
@@ -1300,12 +1292,15 @@ tgResources, $tgResources, $epicsService, tgAnalytics) ->
             $scope.selectedEpic = null
             $scope.searchEpic = ""
             loadProjects()
-            filterEpics(item.projectId, $scope.searchEpic).then () ->
+            filterEpics($scope.selectedProject, $scope.searchEpic).then () ->
                 lightboxService.open($el).then ->
                     $el.find('input').focus
 
         $scope.$on "$destroy", ->
             $el.off()
+
+        $scope.selectProject = (selectedProjectId) ->
+            selectProject(selectedProjectId)
 
         $scope.onUpdateSearchEpic = debounceLeading 300, () ->
             $scope.selectedEpic = null

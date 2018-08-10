@@ -171,10 +171,7 @@
             "SELF": "Assign to me"
         },
         "DUE_DATE": {
-            "TITLE_ACTION_SET_DUE_DATE": "Set due date",
-            "DUE_SOON": "due soon",
-            "PAST_DUE": "past due date",
-            "NO_LONGER_APPLICABLE": "no longer applicable"
+            "TITLE_ACTION_SET_DUE_DATE": "Set due date"
         },
         "ASSIGNED_USERS": {
             "ADD": "Select assigned user",
@@ -632,7 +629,7 @@
             "DAYS_TO_DUE_DATE": "Days to due date",
             "BEFORE_AFTER": "Before/after",
             "BEFORE": "Before",
-            "AFTER": "After"
+            "AFTER": "Past"
         },
         "ROLES": {
             "PAGE_TITLE": "Roles - {{projectName}}",
@@ -1076,9 +1073,6 @@
             "PLACEHOLDER_INVITATION_TEXT": "(Optional) Add a personalized text to the invitation. Tell something lovely to your new members ;-)",
             "HELP_TEXT": "If users are already registered on Taiga, they will be added automatically. Otherwise they will receive an invitation."
         },
-        "CREATE_ISSUE": {
-            "TITLE": "Add Issue"
-        },
         "FEEDBACK": {
             "TITLE": "Tell us something...",
             "COMMENT": "...a bug, some suggestions, something cool... or even your worst nightmare with Taiga",
@@ -1102,22 +1096,6 @@
             "TITLE_ACTION_DELETE_SPRINT": "delete sprint",
             "LAST_SPRINT_NAME": "last sprint is <strong> {{lastSprint}} ;-) </strong>"
         },
-        "CREATE_EDIT_TASK": {
-            "TITLE": "New task",
-            "PLACEHOLDER_SUBJECT": "A task subject",
-            "PLACEHOLDER_STATUS": "Task status",
-            "OPTION_UNASSIGNED": "Unassigned",
-            "PLACEHOLDER_SHORT_DESCRIPTION": "Type a short description",
-            "ACTION_EDIT": "Edit task",
-            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?"
-        },
-        "CREATE_EDIT_US": {
-            "TITLE": "New US",
-            "PLACEHOLDER_DESCRIPTION": "Please add descriptive text to help others better understand this US",
-            "NEW_US": "New user story",
-            "EDIT_US": "Edit user story",
-            "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?"
-        },
         "CREATE_EDIT": {
             "PLACEHOLDER_DESCRIPTION": "Please add descriptive text to help others better understand this {{ objName }}",
             "NEW": "New {{ objName }}",
@@ -1126,8 +1104,7 @@
             "CONFIRM_CLOSE": "You have not saved changes.\nAre you sure you want to close the form?",
             "EXISTING_OBJECT": "Existing {{ objName }}",
             "NEW_OBJECT": "New {{ objName }}",
-            "CHOOSE_EXISTING": "Which {{ objName }}?",
-            "NO_ITEMS_FOUND": "It looks like nothing was found with your search criteria"
+            "CHOOSE_EXISTING": "Which {{ objName }}?"
         },
         "DELETE_DUE_DATE": {
             "TITLE": "Delete due date",
@@ -1138,7 +1115,7 @@
         },
         "REMOVE_RELATIONSHIP_WITH_EPIC": {
             "TITLE": "Remove relationship with Epic",
-            "MESSAGE": "the relationship of this User Story with the Epic {{epicSubject}}"
+            "MESSAGE": "Are you sure you want to delete the relationship of this User Story with the Epic <strong>{{epicSubject}}</strong>"
         },
         "CREATE_MEMBER": {
             "PLACEHOLDER_INVITATION_TEXT": "(Optional) Add a personalized text to the invitation. Tell something lovely to your new members ;-)",
@@ -1181,6 +1158,10 @@
             },
             "TITLE_ACTION_DELETE_DUE_DATE": "Delete due date"
         },
+        "ADMIN_DUE_DATES": {
+            "TITLE_ACTION_DELETE_DUE_DATE": "Delete due date",
+            "SUBTITLE_ACTION_DELETE_DUE_DATE": "Are you sure you want to delete the due date status {{due_date_status_name}}?"
+        },
         "RELATE_TO_EPIC": {
             "TITLE": "Link to Epic",
             "EXISTING_EPIC": "Existing epic",
@@ -1188,7 +1169,6 @@
             "CHOOSE_PROJECT_FOR_CREATION": "What's the project?",
             "CHOOSE_PROJECT_FROM": "What's the project?",
             "SUBJECT": "Subject",
-            "SUBJECT_BULK_MODE": "Subject (bulk insert)",
             "CHOOSE_EPIC": "What's the epic?",
             "FILTER_EPICS": "Filter epics",
             "NO_EPICS_FOUND": "It looks like nothing was found with your search criteria"
@@ -1242,10 +1222,6 @@
             "SYNCHRONIZE_LINK": "synchronize with Taiga Tribe",
             "PUBLISH_MORE_INFO_TITLE": "Do you need somebody for this task?",
             "PUBLISH_MORE_INFO_TEXT": "<p>If you need help with a particular piece of work you can easily create gigs on<a href='http://taigatribe.com' title='Taiga Tribe'> Taiga Tribe </a> and receive help from all over the world. You will be able to control and manage the gig enjoying a great community eager to contribute.</p><p><a href='http://taigatribe.com' title='Taiga Tribe'> TaigaTribe </a>  was born as a Taiga sibling. Both platforms can live separately but we believe that there is much power in using them combined so we are making sure the integration works like a charm.</p>"
-        },
-        "FIELDS": {
-            "TEAM_REQUIREMENT": "Team Requirement",
-            "CLIENT_REQUIREMENT": "Client Requirement"
         }
     },
     "COMMENTS": {
@@ -1469,7 +1445,6 @@
         "ACTION_PROMOTE_TO_US": "Promote to User Story",
         "ACTION_ATTACH_SPRINT": "Attach issue to Sprint",
         "ACTION_DETACH_SPRINT": "Detach issue from Sprint",
-        "ACTION_REMOVE_FROM_SPRINT": "Remove issue from Sprint {{ sprintName }}",
         "PROMOTED": "This issue has been promoted to US:",
         "EXTERNAL_REFERENCE": "This issue has been created from",
         "GO_TO_EXTERNAL_REFERENCE": "Go to origin",
@@ -1491,7 +1466,7 @@
         },
         "CONFIRM_CHANGE_FROM_SPRINT": {
             "TITLE": "Move issue from another sprint",
-            "MESSAGE": "Are you sure you want to move the issue {{ issue }} from sprint {{ oldSprintName }} to sprint {{ newSprintName }}?"
+            "MESSAGE": "<strong>This issue is currently attached to sprint {{ oldSprintName }}</strong>. You are about to detach it from that sprint and attach it instead to sprint <strong>{{ newSprintName }}.</strong>"
         },
         "CONFIRM_PROMOTE": {
             "TITLE": "Promote this issue to a new user story",
