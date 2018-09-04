@@ -770,15 +770,15 @@
     .ticket-affects {
         border: 0;
         padding: 0;
-        &.single-affects {
+        &.single-assign {
             margin: 0;
         }
-        &.multiple-affects {
+        &.multiple-assign {
             align-items: start;
             flex-direction: column;
             margin: 0;
         }
-        .affects-options {
+        .assigned-to-options {
             display: block;
         }
         .remove-user {
