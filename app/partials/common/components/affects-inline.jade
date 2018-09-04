@@ -49,14 +49,6 @@
             .show-more(ng-if="showMore")
                 span(translate="COMMON.ASSIGNED_TO.TOO_MANY")
 
-        span(translate="COMMON.OR", ng-if="isUnassigned")
-        div(ng-if="isUnassigned")
-            a.assign-to-me(
-                href="#"
-                title="{{'COMMON.ASSIGNED_TO.SELF' | translate}}"
-            )
-                span {{ "COMMON.ASSIGNED_TO.SELF" | translate }}
-
     tg-svg.remove-user(
         ng-if="isEditable && !isUnassigned"
         svg-icon="icon-close",

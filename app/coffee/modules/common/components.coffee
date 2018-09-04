@@ -691,17 +691,10 @@ $translate, $compile, $currentUserService, avatarService) ->
         $el.on "click", ".users-search", (event) ->
             event.stopPropagation()
 
-        $el.on "click", ".assign-to-me", (event) ->
-            event.preventDefault()
-            return if not isEditable()
-            $model.$modelValue.assigned_to = $currentUserService.getUser().get('id')
-            renderUser($model.$modelValue)
-            $scope.$apply()
-
         $el.on "click", ".remove-user", (event) ->
             event.preventDefault()
             return if not isEditable()
-            $model.$modelValue.assigned_to  = null
+            $model.$modelValue.affects_customer  = null
             renderUser()
             $scope.$apply()
 
@@ -713,7 +706,7 @@ $translate, $compile, $currentUserService, avatarService) ->
         $el.on "click", ".user-list-single", (event) ->
             event.preventDefault()
             target = angular.element(event.currentTarget)
-            $model.$modelValue.assigned_to = target.data("user-id")
+            $model.$modelValue.affects_customer = target.data("user-id")
             renderUser($model.$modelValue)
             $scope.$apply()
 
