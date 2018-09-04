@@ -1062,6 +1062,9 @@
             "SELECT": "Affecté à",
             "SEARCH": "Chercher des utilisateurs"
         },
+        "AFFECTS_USER": {
+            "TITLE": "Affectes l'utilisateur"
+        },
         "ADD_MEMBER": {
             "TITLE": "Nouveau membre",
             "PLACEHOLDER": "Filtrer les utilisateurs ou écrire un courriel pour inviter un utilisateur",
@@ -1265,7 +1268,7 @@
             "SEVERITY": "gravité",
             "STATUS": "statut",
             "TYPE": "type",
-            "ASSIGNED_TO": "affecté à",
+            "AFFECTS_USER": "Affecte l'utilisateur",
             "ASSIGNED_USERS": "assigned users",
             "DUE_DATE": "due date",
             "MILESTONE": "sprint",

@@ -402,6 +402,7 @@
             "PROJECT": "Project",
             "SPRINT": "Sprint",
             "ASSIGNED_TO": "Assigned",
+            "AFFECTS_USER": "Affects user",
             "STATUS": "Status",
             "PROGRESS": "Progress",
             "VIEW_OPTIONS": "View options"
@@ -1064,6 +1065,11 @@
             "SELECT": "Select assigned to",
             "SEARCH": "Search for users"
         },
+        "AFFECTS_USER": {
+            "SELECT": "Select affected user",
+            "SEARCH": "Search for users",
+            "TITLE": "Affects user"
+        },
         "ADD_MEMBER": {
             "TITLE": "New Member",
             "PLACEHOLDER": "Filter users or write an email to invite",
@@ -1483,6 +1489,7 @@
             },
             "TITLE_ACTION_CHANGE_STATUS": "Change status",
             "TITLE_ACTION_ASSIGNED_TO": "Assigned to",
+            "TITLE_ACTION_AFFECTS_USER": "Affects user",
             "BLOCKED": "Blocked",
             "EMPTY": {
                 "TITLE": "There are no issues to report :-)",

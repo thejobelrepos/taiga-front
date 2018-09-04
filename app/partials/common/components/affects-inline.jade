@@ -23,13 +23,14 @@
             ng-if="isEditable"
         )
             span.assigned-name
-                span(ng-if="fullNameVisible") {{ fullName }}
+                span(ng-if="fullNameVisible && {{ user }}") {{ fullName }}
+                span(ng-if="!fullNameVisible || !{{ user }}") {{'LIGHTBOX.AFFECTS_USER.TITLE' | translate}}
 
         div.pop-users.popover
             input.users-search(
                 type="text"
                 data-maxlength="500"
-                placeholder="{{'LIGHTBOX.ASSIGNED_TO.SEARCH' | translate}}"
+                placeholder="{{'LIGHTBOX.AFFECTS_USER.SEARCH' | translate}}"
                 ng-model="usersSearch"
             )
             a.user-list-single(
