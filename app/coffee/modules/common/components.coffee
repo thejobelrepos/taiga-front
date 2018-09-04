@@ -634,6 +634,110 @@ module.directive("tgAssignedToInline", ["$rootScope", "$tgConfirm", "$tgRepo", "
 
 
 #############################################################################
+## Affects (inline) directive
+#############################################################################
+
+AffectsInlineDirective = ($rootscope, $confirm, $repo, $loading, $modelTransform, $template
+$translate, $compile, $currentUserService, avatarService) ->
+    link = ($scope, $el, $attrs, $model) ->
+        isEditable = ->
+            return $scope.project?.my_permissions?.indexOf($attrs.requiredPerm) != -1
+
+        filterUsers = (text, user) ->
+            username = user.full_name_display.toUpperCase()
+            username = normalizeString(username)
+            text = text.toUpperCase()
+            text = normalizeString(text)
+            return _.includes(username, text)
+
+        renderUserlist = (text) ->
+            users = _.clone($scope.activeUsers, true)
+            users = _.reject(users, {"id": $scope.selected.id}) if $scope.selected?
+            users = _.sortBy(users, (o) -> if o.id is $scope.user.id then 0 else o.id)
+            users = _.filter(users, _.partial(filterUsers, text)) if text?
+
+            visibleUsers = _.slice(users, 0, 5)
+            visibleUsers = _.map visibleUsers, (user) -> user.avatar = avatarService.getAvatar(user)
+
+            $scope.users = _.slice(users, 0, 5)
+            $scope.showMore = users.length > 5
+
+        renderUser = (assignedObject) ->
+            if assignedObject?.assigned_to
+                $scope.selected = assignedObject.assigned_to
+                assigned_to_extra_info = $scope.usersById[$scope.selected]
+                $scope.fullName = assigned_to_extra_info?.full_name_display
+                $scope.isUnassigned = false
+                $scope.avatar = avatarService.getAvatar(assigned_to_extra_info)
+                $scope.bg = $scope.avatar.bg
+                $scope.isIocaine = assignedObject?.is_iocaine
+            else
+                $scope.fullName = $translate.instant("COMMON.ASSIGNED_TO.ASSIGN")
+                $scope.isUnassigned = true
+                $scope.avatar = avatarService.getAvatar(null)
+                $scope.bg = null
+                $scope.isIocaine = false
+
+            $scope.fullNameVisible = !($scope.isUnassigned && !$currentUserService.isAuthenticated())
+            $scope.isEditable = isEditable()
+
+        $el.on "click", ".users-dropdown", (event) ->
+            event.preventDefault()
+            event.stopPropagation()
+            renderUserlist()
+            $scope.$apply()
+            $el.find(".pop-users").popover().open()
+
+        $el.on "click", ".users-search", (event) ->
+            event.stopPropagation()
+
+        $el.on "click", ".assign-to-me", (event) ->
+            event.preventDefault()
+            return if not isEditable()
+            $model.$modelValue.assigned_to = $currentUserService.getUser().get('id')
+            renderUser($model.$modelValue)
+            $scope.$apply()
+
+        $el.on "click", ".remove-user", (event) ->
+            event.preventDefault()
+            return if not isEditable()
+            $model.$modelValue.assigned_to  = null
+            renderUser()
+            $scope.$apply()
+
+        $scope.$watch "usersSearch", (searchingText) ->
+            if searchingText?
+                renderUserlist(searchingText)
+                $el.find('input').focus()
+
+        $el.on "click", ".user-list-single", (event) ->
+            event.preventDefault()
+            target = angular.element(event.currentTarget)
+            $model.$modelValue.assigned_to = target.data("user-id")
+            renderUser($model.$modelValue)
+            $scope.$apply()
+
+        $scope.$watch $attrs.ngModel, (instance) ->
+            renderUser(instance)
+
+        $scope.$on "isiocaine:changed", (ctx, instance) ->
+            renderUser(instance)
+
+        $scope.$on "$destroy", ->
+            $el.off()
+
+    return {
+        link:link,
+        require:"ngModel",
+        templateUrl: "common/components/affects-inline.html"
+    }
+
+module.directive("tgAffectsInline", ["$rootScope", "$tgConfirm", "$tgRepo", "$tgLoading"
+"$tgQueueModelTransformation", "$tgTemplate", "$translate", "$compile","tgCurrentUserService"
+"tgAvatarService", AffectsInlineDirective])
+
+
+#############################################################################
 ## Assigned users (inline) directive
 #############################################################################
 

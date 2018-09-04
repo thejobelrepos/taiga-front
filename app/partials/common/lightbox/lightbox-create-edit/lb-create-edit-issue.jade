@@ -3,6 +3,11 @@ section.ticket-assigned-to(
     ng-model="obj"
     required-perm="modify_{{ objType }}"
 )
+section.ticket-affects(
+    tg-affects-inline
+    ng-model="obj"
+    required-perm="modify_{{ objType }}"
+)
 div.ticket-data-container
     tg-issue-type-button.ticket-status(
         not-auto-save="true"
